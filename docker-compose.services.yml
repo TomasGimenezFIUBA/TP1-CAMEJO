@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: ../frontend
+    container_name: intro-tp1-frontend
+    ports:
+      - "4321:4321"
+    depends_on:
+      - api
+    networks:
+      - intro-tp1-db
+
+networks:
+  intro-tp1-db:
