@@ -1,0 +1,404 @@
+openapi: 3.0.0
+info:
+  title: Gym API
+  version: 1.0.0
+  description: API para gestionar usuarios, ejercicios y rutinas en un gimnasio.
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /users/register:
+    post:
+      summary: Registra un nuevo usuario
+      requestBody:
+        description: Datos del nuevo usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "201":
+          description: Usuario registrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/login:
+    post:
+      summary: Inicia sesión un usuario
+      requestBody:
+        description: Datos de inicio de sesión
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Usuario logueado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+
+  /users/favorites:
+    post:
+      summary: Añade una rutina a favoritos
+      requestBody:
+        description: Datos de la rutina favorita
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteInput"
+      responses:
+        "201":
+          description: Rutina añadida a favoritos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Favorite"
+
+    get:
+      summary: Ver rutinas favoritas
+      responses:
+        "200":
+          description: Lista de rutinas favoritas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Rutine"
+
+  /users/rutines:
+    get:
+      summary: Ver rutinas propias
+      responses:
+        "200":
+          description: Lista de rutinas propias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Rutine"
+
+  /users/exercises:
+    get:
+      summary: Ver ejercicios propios
+      responses:
+        "200":
+          description: Lista de ejercicios propios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Exercise"
+
+  /exercises:
+    get:
+      summary: Obtiene una lista de todos los ejercicios
+      responses:
+        "200":
+          description: Lista de ejercicios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Exercise"
+    post:
+      summary: Crea un nuevo ejercicio
+      requestBody:
+        description: Datos del nuevo ejercicio
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExerciseInput"
+      responses:
+        "201":
+          description: Ejercicio creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exercise"
+
+  /exercises/{id}:
+    get:
+      summary: Ver un ejercicio específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ejercicio específico
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exercise"
+    put:
+      summary: Modificar un ejercicio
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Datos del ejercicio a modificar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExerciseInput"
+      responses:
+        "200":
+          description: Ejercicio modificado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exercise"
+    delete:
+      summary: Borrar un ejercicio
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Ejercicio borrado
+
+  /rutines:
+    get:
+      summary: Obtiene una lista de todas las rutinas
+      responses:
+        "200":
+          description: Lista de rutinas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Rutine"
+    post:
+      summary: Crea una nueva rutina
+      requestBody:
+        description: Datos de la nueva rutina
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RutineInput"
+      responses:
+        "201":
+          description: Rutina creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rutine"
+
+  /rutines/{id}:
+    get:
+      summary: Ver una rutina específica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Rutina específica
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rutine"
+    put:
+      summary: Modificar una rutina
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Datos de la rutina a modificar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RutineInput"
+      responses:
+        "200":
+          description: Rutina modificada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rutine"
+    delete:
+      summary: Borrar una rutina
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Rutina borrada
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+    UserInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    Favorite:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        rutine_id:
+          type: integer
+    FavoriteInput:
+      type: object
+      properties:
+        rutine_id:
+          type: integer
+
+    Exercise:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        calories:
+          type: integer
+        extra_data:
+          type: string
+        muscles:
+          type: string
+        user_id:
+          type: integer
+    ExerciseInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        calories:
+          type: integer
+        extra_data:
+          type: string
+        muscles:
+          type: string
+        user_id:
+          type: integer
+
+    Rutine:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        expected_time:
+          type: integer
+        user_id:
+          type: integer
+    RutineInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        expected_time:
+          type: integer
+        user_id:
+          type: integer
+
+    DetailedExerciseForRutine:
+      type: object
+      properties:
+        id:
+          type: integer
+        exercise_id:
+          type: integer
+        rutine_id:
+          type: integer
+        repetitions:
+          type: integer
+        weight:
+          type: number
+          format: float
+        series:
+          type: integer
+        tips:
+          type: string
+    DetailedExerciseForRutineInput:
+      type: object
+      properties:
+        exercise_id:
+          type: integer
+        rutine_id:
+          type: integer
+        repetitions:
+          type: integer
+        weight:
+          type: number
+          format: float
+        series:
+          type: integer
+        tips:
+          type: string
