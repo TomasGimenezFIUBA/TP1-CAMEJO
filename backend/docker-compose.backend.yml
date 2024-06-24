@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16.0
+    container_name: intro-tp1-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - intro-tp1-db
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+  
+  adminer:
+    image: adminer
+    container_name: my-adminer
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - intro-tp1-db
+
+  api:
+    build: 
+      context: ./
+    container_name: intro-tp1-api
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+    networks:
+      - intro-tp1-db
+    environment:
+      - FLASK_ENV=${FLASK_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - API_PORT=${API_PORT}
+  
+  # MinIO es donde vamos a guardar las imagenes/videos
+  #minio:
+  #  image: minio/minio
+  #  container_name: intro-tp1-minio
+  #  environment:
+  #    MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+  #    MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+  #  volumes:
+  #    - minio-data:/data
+  #  ports:
+  #    - "9000:9000"
+  #  command: server /data
+#
+  ## mc es el cliente para interactuar con MinIO
+  #mc:
+  #  image: minio/mc
+  #  container_name: intro-tp1-mc
+  #  depends_on:
+  #    - minio
+  #  entrypoint: /bin/sh -c "
+  #    until (mc alias set myminio http://minio:9000 ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY}) do echo 'waiting for minio' && sleep 1; done;
+  #    mc mb myminio/tempbucket; # la idea es subir los archivos a este bucket, subir el registro y si todo ok moverlo al fixedbucket sino se borra solo
+  #    mc mb myminio/fixedbucket;
+  #    mc ilm add --expiry-days 1 myminio/tempbucket;
+  #    tail -f /dev/null "
+
+networks:
+  intro-tp1-db:
+
+volumes:
+  pgdata:
+    driver: local
+  minio-data:
+    driver: local
