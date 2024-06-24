@@ -1,0 +1,133 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Sign Up">
+    <section class="signup-section">
+        <div class="container">
+            <div class="signup-box">
+                <div class="signup-header">
+                    <h1>Sign Up</h1>
+                    <p>Crea una cuenta para acceder a todas las funcionalidades de nuestra página. ¡Únete a nosotros y disfruta de una experiencia personalizada!</p>
+                </div>
+                <form id="signup-form" action="/api/signup" method="post">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Password" required />
+                    </div>
+                    <button type="submit" class="btn-submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            const email = (document.getElementById('email') as HTMLInputElement).value;
+            const password = (document.getElementById('password') as HTMLInputElement).value;
+            const confirmPassword = (document.getElementById('confirm-password') as HTMLInputElement).value;
+            const name = (document.getElementById('name') as HTMLInputElement).value;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            if (!email || !password || !confirmPassword || !name) {
+                alert('Please complete all fields');
+                event.preventDefault();
+            } else if (!emailPattern.test(email)) {
+                alert('Mail is not valid');
+                event.preventDefault();
+            } else if (password.length < 6) {
+                alert('Password must be at least 8 characters.');
+                event.preventDefault();
+            } else if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                event.preventDefault();
+            }
+        });
+    </script>
+</Layout>
+
+<style>
+  .signup-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  }
+
+  .container {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  .signup-box {
+    text-align: center;
+  }
+
+  .signup-header h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+
+  .signup-header p {
+    margin-bottom: 20px;
+    color: #6c757d;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    background-color: #218838;
+  }
+
+  label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #495057;
+  }
+</style>
