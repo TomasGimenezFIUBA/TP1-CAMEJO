@@ -1,0 +1,24 @@
+cosas que tiene que hacer la api:
+USUARIOS:
+* registrarse
+* loguearse
+* añadir rutina a favoritos
+* ver rutinas favoritas
+* ver rutinas propias
+* ver ejercicios propios
+
+EJERCICIOS:
+* crear ejercicio
+* modificar ejercicio
+* borrar ejercicio
+* ver ejercicio especifico
+* ver ejercicios
+
+RUTINAS:
+* crear rutina
+* modificar rutina
+* borrar rutina
+* ver rutina especifico
+* ver rutinas 
+
+    

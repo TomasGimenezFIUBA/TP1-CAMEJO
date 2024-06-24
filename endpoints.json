@@ -1,0 +1,220 @@
+{
+    "USUARIOS": {
+      "register": {
+        "path": "/api/register",
+        "method": "POST",
+        "description": "Registrar un nuevo usuario",
+        "request_body": {
+          "username": "string",
+          "password": "string"
+        },
+        "response": {
+          "message": "string",
+          "user_id": "integer"
+        }
+      },
+      "login": {
+        "path": "/api/login",
+        "method": "POST",
+        "description": "Iniciar sesión de usuario",
+        "request_body": {
+          "username": "string",
+          "password": "string"
+        },
+        "response": {
+          "message": "string",
+          "token": "string"
+        }
+      },
+      "add_favorite_routine": {
+        "path": "/api/users/favorites",
+        "method": "POST",
+        "description": "Añadir rutina a favoritos",
+        "request_body": {
+          "routine_id": "integer"
+        },
+        "response": {
+          "message": "string"
+        }
+      },
+      "get_favorite_routines": {
+        "path": "/api/users/favorites",
+        "method": "GET",
+        "description": "Ver rutinas favoritas",
+        "response": {
+          "favorites": [
+            {
+              "routine_id": "integer",
+              "routine_name": "string"
+            }
+          ]
+        }
+      },
+      "get_own_routines": {
+        "path": "/api/users/routines",
+        "method": "GET",
+        "description": "Ver rutinas propias",
+        "response": {
+          "routines": [
+            {
+              "routine_id": "integer",
+              "routine_name": "string"
+            }
+          ]
+        }
+      },
+      "get_own_exercises": {
+        "path": "/api/users/exercises",
+        "method": "GET",
+        "description": "Ver ejercicios propios",
+        "response": {
+          "exercises": [
+            {
+              "exercise_id": "integer",
+              "exercise_name": "string"
+            }
+          ]
+        }
+      }
+    },
+    "EJERCICIOS": {
+      "create_exercise": {
+        "path": "/api/exercises",
+        "method": "POST",
+        "description": "Crear un nuevo ejercicio",
+        "request_body": {
+          "name": "string",
+          "description": "string"
+        },
+        "response": {
+          "message": "string",
+          "exercise_id": "integer"
+        }
+      },
+      "update_exercise": {
+        "path": "/api/exercises/{exercise_id}",
+        "method": "PUT",
+        "description": "Modificar un ejercicio existente",
+        "request_body": {
+          "name": "string",
+          "description": "string"
+        },
+        "response": {
+          "message": "string"
+        }
+      },
+      "delete_exercise": {
+        "path": "/api/exercises/{exercise_id}",
+        "method": "DELETE",
+        "description": "Borrar un ejercicio",
+        "response": {
+          "message": "string"
+        }
+      },
+      "get_exercise": {
+        "path": "/api/exercises/{exercise_id}",
+        "method": "GET",
+        "description": "Ver un ejercicio específico",
+        "response": {
+          "exercise_id": "integer",
+          "name": "string",
+          "description": "string"
+        }
+      },
+      "get_exercises": {
+        "path": "/api/exercises",
+        "method": "GET",
+        "description": "Ver todos los ejercicios",
+        "response": {
+          "exercises": [
+            {
+              "exercise_id": "integer",
+              "name": "string",
+              "description": "string"
+            }
+          ]
+        }
+      }
+    },
+    "RUTINAS": {
+      "create_routine": {
+        "path": "/api/routines",
+        "method": "POST",
+        "description": "Crear una nueva rutina",
+        "request_body": {
+          "name": "string",
+          "description": "string",
+          "exercises": [
+            {
+              "exercise_id": "integer",
+              "sets": "integer",
+              "reps": "integer"
+            }
+          ]
+        },
+        "response": {
+          "message": "string",
+          "routine_id": "integer"
+        }
+      },
+      "update_routine": {
+        "path": "/api/routines/{routine_id}",
+        "method": "PUT",
+        "description": "Modificar una rutina existente",
+        "request_body": {
+          "name": "string",
+          "description": "string",
+          "exercises": [
+            {
+              "exercise_id": "integer",
+              "sets": "integer",
+              "reps": "integer"
+            }
+          ]
+        },
+        "response": {
+          "message": "string"
+        }
+      },
+      "delete_routine": {
+        "path": "/api/routines/{routine_id}",
+        "method": "DELETE",
+        "description": "Borrar una rutina",
+        "response": {
+          "message": "string"
+        }
+      },
+      "get_routine": {
+        "path": "/api/routines/{routine_id}",
+        "method": "GET",
+        "description": "Ver una rutina específica",
+        "response": {
+          "routine_id": "integer",
+          "name": "string",
+          "description": "string",
+          "exercises": [
+            {
+              "exercise_id": "integer",
+              "sets": "integer",
+              "reps": "integer"
+            }
+          ]
+        }
+      },
+      "get_routines": {
+        "path": "/api/routines",
+        "method": "GET",
+        "description": "Ver todas las rutinas",
+        "response": {
+          "routines": [
+            {
+              "routine_id": "integer",
+              "name": "string",
+              "description": "string"
+            }
+          ]
+        }
+      }
+    }
+  }
+  
