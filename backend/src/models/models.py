@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -25,9 +24,9 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     
     # Relaciones
-    exercises = relationship('Exercise', backref='owner', lazy=True)
-    created_routines = relationship('Routine', backref='creator', lazy=True)
-    fav_routines = relationship('Routine', secondary=users_fav_routines, back_populates='favorited_by', lazy=True)
+    exercises = db.relationship('Exercise', backref='owner', lazy=True)
+    created_routines = db.relationship('Routine', backref='creator', lazy=True)
+    fav_routines = db.relationship('Routine', secondary=users_fav_routines, lazy=True)
 
     def to_dict(self):
         return {
@@ -49,8 +48,8 @@ class Exercise(db.Model):
     user_id = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False)
     
     # Relaciones
-    detailed_exercises = relationship('DetailedExerciseForRoutine', backref='exercise', lazy=True)
-    training_equipments = relationship('TrainingEquipment', secondary=training_equipment_exercises, backref='exercises', lazy=True)
+    detailed_exercises = db.relationship('DetailedExerciseForRoutine', backref='exercise', lazy=True)
+    equipments = db.relationship('TrainingEquipment', secondary=training_equipment_exercises, lazy=True)
 
 class Routine(db.Model):
     __tablename__ = 'routines'
@@ -62,8 +61,7 @@ class Routine(db.Model):
     user_id = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False)
     
     # Relaciones
-    detailed_exercises = relationship('DetailedExerciseForRoutine', backref='routine', lazy=True)
-    favorited_by = relationship('User', secondary=users_fav_routines, back_populates='fav_routines', lazy=True)
+    detailed_exercises = db.relationship('DetailedExerciseForRoutine', backref='routine', lazy=True)
 
 class DetailedExerciseForRoutine(db.Model):
     __tablename__ = 'detailed_exercise_for_routines'
@@ -81,5 +79,4 @@ class TrainingEquipment(db.Model):
     name = db.Column(db.String(255), nullable=False)
     url = db.Column(db.String(255), nullable=True)
     
-    # Relaciones
-    exercises = relationship('Exercise', secondary=training_equipment_exercises, backref='training_equipments', lazy=True)
+    # No se necesita la relación inversa
