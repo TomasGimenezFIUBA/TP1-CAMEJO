@@ -9,7 +9,7 @@ import Layout from "../layouts/Layout.astro"
                     <h1>Login</h1>
                     <p>Para poder seguir utilizando las funcionalidades de nuestra página debes loguearte</p>
                 </div>
-                <form class="login-form">
+                <form id="login-form" class="login-form">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter email" />
@@ -26,6 +26,24 @@ import Layout from "../layouts/Layout.astro"
             </div>
         </div>
     </section>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            const email = (document.getElementById('email') as HTMLInputElement).value;
+            const password = (document.getElementById('password') as HTMLInputElement).value;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            if (!email || !password ) {
+                alert('Please complete all fields');
+                event.preventDefault();
+            } else if (!emailPattern.test(email)) {
+                alert('Mail is not valid');
+                event.preventDefault();
+            } else if (password.length < 6) {
+                alert('Password must be at least 8 characters.');
+                event.preventDefault();
+            } 
+        });
+    </script>
 </Layout>
 
 <style>
