@@ -4,3 +4,4 @@ __pycache__/
 .env.production
 .env.test
 .env.local
+diario_backend.txt
