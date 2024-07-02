@@ -1,0 +1,85 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Header from "../components/Header.astro"
+import Card from "../components/Card.astro"
+---
+<Layout title="GYM">
+	<main>
+		<Header/>
+		<body>
+			<ul role="list" class="link-card-grid">
+				<div class="caja">
+					<a href="/" class="a">
+						<img src="../../imagenes/downloadedImage.png" class="imagen" >
+					</a>
+					<Card
+					href="/"
+					title="INICIAR RUTINA"
+					/>
+				</div>
+				<div class="caja" id="caja2">
+					<a href="/" class="a">
+						<img src="../../imagenes/_dd0f0faf-adb1-463c-82c5-db0eeaf72b82.jpeg" class="imagen" >
+					</a>
+					<Card
+					href="/"
+					title="CREAR TÚ RUTINA"
+					/>
+				</div>
+				<div class="caja">
+					<a href="/" class="a">
+						<img src="../../imagenes/downloadedImage1.png" class="imagen" id="imagen3">
+					</a>				
+					<Card
+					href="/"
+					title="PROGRESO"
+					/>
+				</div>
+			</ul>
+		</body>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 1rem;
+		width: 900px;
+		max-width: calc(100% - 2rem);
+		color: white;
+		font-size: 20px;
+		line-height: 1.6;
+	}
+	ul {
+		position: relative;
+		right: 370px;
+	}
+	.link-card-grid {
+		display: flex;
+		padding: 0;
+	}
+	.imagen {
+		border-radius: 12px;
+		width: auto;
+		height: 500px;
+	}
+	#imagen3 {
+		position: relative;
+		right: 2px;
+		bottom: 2px;
+		width: 502px;
+		height: 502px;
+		border-top-left-radius: 22px;
+	}
+	.a:hover {
+    	-webkit-filter: brightness(115%);
+	}
+	.caja {
+		width: 100%;
+		height: 310px;
+	}
+	#caja2 {
+		padding-left: 70px;
+		padding-right: 70px;
+	}
+</style>

@@ -1,0 +1,33 @@
+---
+console.log("javascript")
+---
+
+<header class="header">
+    <div class="logo">
+        <h2 class="logo-texto">
+            <span class="text-gradient">GYM</span>
+        </h2> 
+    </div>
+</header>
+<style>
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 120px;
+    }
+    .logo{
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .text-gradient{
+        font-size: 500%;
+        background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400%;
+		background-position: 0%;
+    }
+</style>
