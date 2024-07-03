@@ -32,10 +32,8 @@ class UserService:
         )
 
         db.session.add(user)
-
-    def register_user(name, email, password):
-        user = User(name=name, email=email, password=password)
-        db.session.add()
+        db.session.commit()
+        return user.to_dict()
 
     def update_user(user_id, data):
         user = User.query.get(user_id)
