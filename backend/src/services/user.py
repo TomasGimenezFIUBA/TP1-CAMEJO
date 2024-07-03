@@ -32,10 +32,11 @@ class UserService:
         )
 
         db.session.add(user)
-        db.session.commit()
-        return user.to_dict()
-    
-    @staticmethod
+
+    def register_user(name, email, password):
+        user = User(name=name, email=email, password=password)
+        db.session.add()
+
     def update_user(user_id, data):
         user = User.query.get(user_id)
         if not user:
