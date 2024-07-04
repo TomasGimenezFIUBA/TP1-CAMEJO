@@ -14,7 +14,7 @@ EJERCICIOS:
 * ver ejercicio especifico
 * ver ejercicios
 
-RUTINAS:
+RUTINAS: (OPCIONAL)
 * crear rutina
 * modificar rutina
 * borrar rutina

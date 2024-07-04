@@ -5,3 +5,4 @@ __pycache__/
 .env.test
 .env.local
 diario_backend.txt
+cosas.txt
