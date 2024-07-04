@@ -5,3 +5,4 @@ __pycache__/
 .env.test
 .env.local
 .DS_Store
+diario_backend.txt
