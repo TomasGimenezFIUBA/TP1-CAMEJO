@@ -1,0 +1,121 @@
+--- 
+import Header from "../components/Header.astro" 
+import Layout from "../layouts/Layout.astro"
+---
+<Layout title="GYM">
+    <main>
+        <Header/>
+        <body>
+            <div class="nombre">
+                <h2 class="nombre-ejercicio">Nombre del ejercicio</h2>
+            </div>
+            <div class="cont-ejercicio">
+                <p class="num-ejercicio">1/12</p>
+            </div>
+            <div class="cont-img">
+                <img src="../../imagenes/_dd0f0faf-adb1-463c-82c5-db0eeaf72b82.jpeg" class="imagen">
+            </div>
+            <div class="num-rep">
+                <p class="num-ejercicio">12</p>
+            </div>
+            <div class="navegacion">
+            <button class="anterior">Anterior</button>
+            <button class="siguiente">Sgiuiente</button>
+            </div>
+            <nav>
+                <ul>
+                    <button>
+                        <li>
+                            <h2>Rutina por defecto</h2>
+                        </li>
+                    </button>
+                    <button>
+                        <li>
+                            <h2>Rutina 1</h2>
+                        </li>
+                    </button>
+                    <button>
+                        <li>
+                            <h2>Agregar Rutina</h2>
+                        </li>
+                    </button>
+                </ul>
+            </nav>
+        </body>
+    </main>
+</Layout>
+<style>
+    h2 {
+        color: rgba(4, 226, 255, 0.697);
+    }
+    .nombre-ejercicio {
+        font-size: 35px;
+    }
+    .num-ejercicio {
+        font-size: 40px;
+        color: azure;
+    }
+    .nombre {
+        display: flex;
+        justify-content: center;
+    }
+    .cont-ejercicio {
+        display: flex;
+        position: relative;
+        bottom: 60px;
+        justify-content: right;
+        right: 450px;
+    }
+    .cont-img{
+        display: flex;
+        position: relative;
+        justify-content: center;
+        bottom: 100px;
+    }
+    .imagen {
+        height: 350px;
+        width: auto;
+    }
+    .num-rep {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        bottom: 120px;
+    }
+    .navegacion {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        bottom: 120px;
+    }    
+    .anterior {
+        width: 10%;
+        margin-right: 15px;
+        font-size: 20px;
+    }
+    .siguiente {
+        width: 10%;
+        margin-left: 15px;
+        font-size: 20px;
+    }
+    nav {
+        position: absolute;
+        top: 140px;
+        width: 17%;
+        height: auto;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    button {
+            vertical-align: middle;
+            width: 100%;
+            height: 80px;
+            line-height: 100%;
+            padding: 0px;
+            background-color: #131313;
+            color: rgba(4, 226, 255, 0.697);
+    }
+
+</style>
