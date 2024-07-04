@@ -10,6 +10,11 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     TESTING = False
+    MINIO_URL = os.getenv('MINIO_URL')
+    MINIO_ACCESS_KEY = os.getenv('MINIO_ACCESS_KEY')
+    MINIO_SECRET_KEY = os.getenv('MINIO_SECRET_KEY')
+    MINIO_SECURE = False
+    BUCKET_NAME = os.getenv('BUCKET_NAME')
 
 class LocalConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')+''

@@ -43,30 +43,27 @@ services:
       - API_PORT=${API_PORT}
   
   # MinIO es donde vamos a guardar las imagenes/videos
-  #minio:
-  #  image: minio/minio
-  #  container_name: intro-tp1-minio
-  #  environment:
-  #    MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-  #    MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-  #  volumes:
-  #    - minio-data:/data
-  #  ports:
-  #    - "9000:9000"
-  #  command: server /data
-#
-  ## mc es el cliente para interactuar con MinIO
-  #mc:
-  #  image: minio/mc
-  #  container_name: intro-tp1-mc
-  #  depends_on:
-  #    - minio
-  #  entrypoint: /bin/sh -c "
-  #    until (mc alias set myminio http://minio:9000 ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY}) do echo 'waiting for minio' && sleep 1; done;
-  #    mc mb myminio/tempbucket; # la idea es subir los archivos a este bucket, subir el registro y si todo ok moverlo al fixedbucket sino se borra solo
-  #    mc mb myminio/fixedbucket;
-  #    mc ilm add --expiry-days 1 myminio/tempbucket;
-  #    tail -f /dev/null "
+  minio:
+   image: minio/minio
+   container_name: intro-tp1-minio
+   environment:
+     MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+     MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+   volumes:
+     - minio-data:/data
+   ports:
+     - "9000:9000"
+   command: server /data
+
+  ## mc es el cliente para interactuar con MinIO TODO arreglar
+  mc:
+    image: minio/mc
+    container_name: intro-tp1-mc
+    depends_on:
+      - minio
+    entrypoint: /bin/sh -c "
+      until (mc alias set myminio http://minio:9000 ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY}) do echo 'waiting for minio' && sleep 1; done;
+      mc mb myminio/fixedbucket"
 
 networks:
   intro-tp1-db:
