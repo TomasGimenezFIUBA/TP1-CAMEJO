@@ -20,7 +20,7 @@ def get_user_by_id(user_id):
     try:
         user = UserService.get_user_by_id(user_id)
         return jsonify(user), 200
-    
+
     except UserNotFoundException as e:
         jsonify({'error': e.message}), 404
     except Exception as e:
