@@ -1,91 +1,77 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Layout from "../layouts/Layout.astro"
+import Card from "../components/Card.astro"
 ---
-
-<Layout title="Welcome to Gym Workout">
-	<main>
-		<h1 class="text-gradient">Welcome to Gym Workout</h1>
-		<p class="subtitle">
-			Welcome to Gym Workout, a simple web app to help you track your workouts. You can create a workout, add exercises to it, and track your progress over time.
-		</p>
-		<section class="link-card-grid">
-			<Card title="Your routines" body="Look at your routines." href='' />
-			<Card title="Explore new routines" body="Explore different routines." href='' />
-			<Card title="New exercise" body="Create new exercises." href='' />
-		</section>
-	</main>
+<Layout title="GYM">
+	<ul role="list" class="link-card-grid">
+		<div class="caja">
+			<a href="/rutina-inicio" class="a">
+				<img src="./person-lifting-weight.jpeg" class="imagen" >
+			</a>
+			<Card
+			href="/"
+			title="INICIAR RUTINA"
+			/>
+		</div>
+		<div class="caja" id="caja2">
+			<a href="/create" class="a">
+				<img src="/person-question.jpeg" class="imagen" >
+			</a>
+			<Card
+			href="/"
+			title="CREAR TÚ RUTINA"
+			/>
+		</div>
+		<div class="caja">
+			<a href="/" class="a">
+				<img src="/person-with-pencil.jpeg" class="imagen" id="imagen3">
+			</a>				
+			<Card
+			href="/"
+			title="PROGRESO"
+			/>
+		</div>
+	</ul>
 </Layout>
 
 <style>
-	:root {
-		--background-dark: #121212;
-		--accent-color: #1DB954;
-		--text-color: #FFFFFF;
-		--card-background: #1E1E1E;
-		--card-border: #e70d0d;
-		--accent-gradient: linear-gradient(45deg, #1DB954, #1D88B5);
-	}
-	
-	body {
-		background-color: var(--background-dark);
-		color: var(--text-color);
-		font-family: 'Roboto', sans-serif;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-	
-	main {
-		flex: 1;
+	ul {
 		margin: auto;
-		padding: 2rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	footer {
-		text-align: center;
 		padding: 1rem;
-		background-color: #1E1E1E;
-		width: 100%;
+		width: 900px;
+		max-width: calc(100% - 2rem);
+		color: white;
+		font-size: 20px;
+		line-height: 1.6;
+		position: relative;
+		right: 370px;
 	}
-	
-	h1 {
-		font-size: 2.5rem;
-		font-weight: 700;
-		text-align: center;
-		margin-bottom: 1.5rem;
-	}
-	
-	.subtitle {
-		font-size: 1.2rem;
-		text-align: center;
-		margin-bottom: 2.5rem;
-	}
-	
-	.text-gradient {
-		background: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 200%;
-		animation: gradient-animation 3s infinite linear;
-	}
-	
-	@keyframes gradient-animation {
-		0% { background-position: 0%; }
-		100% { background-position: 200%; }
-	}
-	
 	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: 1.5rem;
+		display: flex;
+		padding: 0;
+	}
+	.imagen {
+		border-radius: 12px;
+		width: auto;
+		height: 500px;
+	}
+	#imagen3 {
+		position: relative;
+		right: 2px;
+		bottom: 2px;
+		width: 502px;
+		height: 502px;
+		border-top-left-radius: 22px;
+	}
+	.a:hover {
+    	-webkit-filter: brightness(115%);
+	}
+	.caja {
 		width: 100%;
+		height: 310px;
+	}
+	#caja2 {
+		padding-left: 70px;
+		padding-right: 70px;
 	}
 </style>
