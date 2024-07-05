@@ -6,11 +6,11 @@ import Card from "../components/Card.astro"
 	<ul role="list" class="link-card-grid">
 		<div class="caja">
 			<a href="/rutina-inicio" class="a">
-				<img src="./person-lifting-weight.jpeg" class="imagen" >
+				<img src="/person-with-pencil.jpeg" class="imagen" >
 			</a>
 			<Card
 			href="/"
-			title="INICIAR RUTINA"
+			title="CREATE EXERCISE"
 			/>
 		</div>
 		<div class="caja" id="caja2">
@@ -19,16 +19,16 @@ import Card from "../components/Card.astro"
 			</a>
 			<Card
 			href="/"
-			title="CREAR TÚ RUTINA"
+			title="SEE MY EXERCISES"
 			/>
 		</div>
 		<div class="caja">
 			<a href="/" class="a">
-				<img src="/person-with-pencil.jpeg" class="imagen" id="imagen3">
+				<img src="./person-lifting-weight.jpeg" class="imagen" id="imagen3">
 			</a>				
 			<Card
 			href="/"
-			title="PROGRESO"
+			title="EXPLORE EXERCISES"
 			/>
 		</div>
 	</ul>
@@ -45,6 +45,7 @@ import Card from "../components/Card.astro"
 		line-height: 1.6;
 		position: relative;
 		right: 370px;
+		top: 100px;
 	}
 	.link-card-grid {
 		display: flex;
@@ -54,14 +55,6 @@ import Card from "../components/Card.astro"
 		border-radius: 12px;
 		width: auto;
 		height: 500px;
-	}
-	#imagen3 {
-		position: relative;
-		right: 2px;
-		bottom: 2px;
-		width: 502px;
-		height: 502px;
-		border-top-left-radius: 22px;
 	}
 	.a:hover {
     	-webkit-filter: brightness(115%);
@@ -73,5 +66,9 @@ import Card from "../components/Card.astro"
 	#caja2 {
 		padding-left: 70px;
 		padding-right: 70px;
+	}
+	#imagen3 {
+		position: relative;
+		right: 2px;
 	}
 </style>
