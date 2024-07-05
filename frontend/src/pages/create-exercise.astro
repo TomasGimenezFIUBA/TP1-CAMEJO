@@ -4,18 +4,21 @@ import Layout from "../layouts/Layout.astro"
 <Layout title="GYM">
     <div class="form">
         <section>
-            <input type="text" id="exercise-name" name="exercise-name" placeholder="exercise name">
+            <input type="text" id="exercise-name" name="exercise-name" placeholder="EXERCISE NAME">
         </section>
-        <form class="list">
-            Used muscle
-            <select>
-                <option>biceps</option>
-                <option>triceps</option>
-                <option>ABS</option>
-                <option>calf</option>
-                <option>stretching</option>
-            </select>
-        </form>
+		<!--to do se deben cambiar las imagenes, por el filtro del cuerpo y las cosas necesarias para hacer ejercico-->
+		<div class="cont-subtit">
+			<h2 class="subtitles" id="body-parts">USED BODY PARTS</h2>
+			<h2 class="subtitles" id="objects">NECESSARY OBJECTS</h2>
+		</div>
+		<div class="cont-filter">
+			<div class="muscles-img">
+				<img src="/person-with-pencil.jpeg" class="imagen">
+			</div>
+			<div class="obajects-img">
+				<img src="/person-with-pencil.jpeg" class="imagen">
+			</div>
+		</div>	
         <div class="buttons">
             <button id="back">back</button>
             <button id="create">create</button>
@@ -23,39 +26,62 @@ import Layout from "../layouts/Layout.astro"
     </div>	
 </Layout>
 <style>
-	select{
-		font-size: 30px;
-	}
 	input {
-		font-size: 30px;
+		font-size: 23px;
 	}
 	button {
 		font-size: 30px;
 	}
-	.list {
-		color: white;
-		font-size: 30px;
+	.subtitles {
+		font-family: inherit;
+		font-size: 20px;
+		color: rgba(0, 255, 55, 0.716);
+	}
+	.cont-subtit {
+		display: flex;
+		justify-content: center;
+	}
+	#body-parts {
+		margin-right: 22%;
+	}
+	#objects {
+		margin-left: 22%;
+	}
+	.cont-filter {
+		display: flex;
+		justify-content: center;		
 	}
 	.form {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		text-align: center;
 		margin-left: 350px;
 		margin-right: 350px;
 		background-color: rgb(37, 36, 36);
+		top: 100px;
 	}
 	#exercise-name {
-		margin: 30px;
-	}
-	.list {
+		color: black;
 		margin: 30px;
 	}
 	#back {
-
-		margin: 40px;
+		margin: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left: 40px;
+		padding-right: 40px;
+		background-color: black;
+		color: rgba(0, 255, 55, 0.716);
 	}
-	#next {
-		margin: 40px;
+	#create {
+		margin: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left: 40px;
+		padding-right: 40px;
+		background-color: black;
+		color: rgba(0, 255, 55, 0.716);	
 	}
 
 </style>
