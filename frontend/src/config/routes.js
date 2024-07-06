@@ -3,7 +3,7 @@ export const publicRoutes = [
     "/sign-up",
     "/create-exercise",
     "/",
-    "/demos"
+    "/demos",
     "/see-my-exercise",
     "/search-exercise"
 ]
