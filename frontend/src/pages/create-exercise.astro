@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout.astro"
     <div class="form">
         <section>
             <input type="text" id="exercise-name" name="exercise-name" placeholder="EXERCISE NAME">
+			<input type="text" id="calories-burned" name="calories-burned" placeholder="CALORIES BURNED">
         </section>
 		<!--to do se deben cambiar las imagenes, por el filtro del cuerpo y las cosas necesarias para hacer ejercico-->
 		<div class="cont-subtit">
@@ -18,9 +19,11 @@ import Layout from "../layouts/Layout.astro"
 			<div class="obajects-img">
 				<img src="/person-with-pencil.jpeg" class="imagen">
 			</div>
-		</div>	
+		</div>
         <div class="buttons">
-            <button id="back">back</button>
+			<a href="/">
+            	<button id="back" >back</button>
+			</a>
             <button id="create">create</button>
         </div>
     </div>	
