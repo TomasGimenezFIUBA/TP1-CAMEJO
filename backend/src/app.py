@@ -4,6 +4,7 @@ from flask import Flask
 
 from models.models import db
 from blueprints.users import user_routes
+from blueprints.exercises import exercise_routes
 from config import config
 
 # Determinar el entorno (development, production, testing)
@@ -15,6 +16,7 @@ app = Flask(__name__)
 app.config.from_object(config[env_name])
 
 app.register_blueprint(user_routes, url_prefix='/api/v1')
+app.register_blueprint(exercise_routes, url_prefix='/api/v1')
 
 @app.route("/")
 def hello():

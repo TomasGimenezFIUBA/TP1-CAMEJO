@@ -4,5 +4,6 @@ __pycache__/
 .env.production
 .env.test
 .env.local
-.DS_Store
 diario_backend.txt
+cosas.txt
+.DS_Store

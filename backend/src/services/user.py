@@ -1,4 +1,4 @@
-from models.models import User
+from models.models import User, Exercise, training_equipment_exercises
 from exceptions.UsersExceptions import UserNotFoundException, InvalidUserFormatException
 from models.models import db
 
@@ -15,6 +15,14 @@ class UserService:
             raise UserNotFoundException(f'User with id {user_id} not found')
         return user.to_dict()
     
+    @staticmethod
+    def get_user_exercises(user_id):
+        user = User.query.get(user_id)
+        if not user:
+            raise UserNotFoundException(f'User with id {user_id} not found')
+        
+        return [exercise.to_dict() for exercise in user.exercises]
+
     @staticmethod
     def create_user(data):
         if 'name' not in data or 'password' not in data:
@@ -34,7 +42,8 @@ class UserService:
         db.session.add(user)
         db.session.commit()
         return user.to_dict()
-
+    
+    @staticmethod
     def update_user(user_id, data):
         user = User.query.get(user_id)
         if not user:
@@ -49,5 +58,18 @@ class UserService:
             user.email = data['email']
         if 'password' in data:
             user.password = data['password'] #TODO generate_password_hash(data['password'])
+            
         db.session.commit()
         return user.to_dict()
+    
+    @staticmethod
+    def delete_user(user_id):
+        user = User.query.filter_by(id=user_id).first()
+        
+        if not user:
+            raise UserNotFoundException()
+
+        db.session.delete(user)    #? ¿Esto necesita estar dentro de un else? 
+        db.session.commit()         
+        return user.to_dict()
+

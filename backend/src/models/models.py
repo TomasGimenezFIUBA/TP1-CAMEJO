@@ -51,6 +51,18 @@ class Exercise(db.Model):
     detailed_exercises = db.relationship('DetailedExerciseForRoutine', backref='exercise', lazy=True)
     equipments = db.relationship('TrainingEquipment', secondary=training_equipment_exercises, lazy=True)
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'url': self.url,
+            'calories': self.calories,
+            'extra_data': self.extra_data,
+            'muscles': self.muscles,
+            'id': self.id,
+            'user_id': self.user_id
+        }
+
 class Routine(db.Model):
     __tablename__ = 'routines'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
@@ -78,5 +90,12 @@ class TrainingEquipment(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     url = db.Column(db.String(255), nullable=True)
-    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.url,
+        }
+
     # No se necesita la relación inversa
