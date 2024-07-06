@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+//import MusclesGroupSelector from "../components/MusclesGroupSelector.astro";
+import MusclesGroupSelector from "../components/MusclesGroupSelector.jsx";
+import ParentComponent from "../components/MusclesParent";
+---
+
+<Layout title="demos">
+    <div class="w-full h-full min-h-lvh">
+        <!-- 
+            <MusclesGroupSelector> </MusclesGroupSelector>
+        <MusclesGroupSelector selectedMuscles={["biceps"]} onMuscleChange={() => {}} client:only="react"></MusclesGroupSelector>
+        -->
+        <ParentComponent client:only="react" />
+    </div>         
+</Layout>
+
+<style>
+  
+</style>
