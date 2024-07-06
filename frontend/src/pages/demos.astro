@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 //import MusclesGroupSelector from "../components/MusclesGroupSelector.astro";
 import MusclesGroupSelector from "../components/MusclesGroupSelector.jsx";
 import ParentComponent from "../components/MusclesParent";
+import TrainingEquipmentSelector from "../components/TrainingEquipmentSelector";
 ---
 
 <Layout title="demos">
@@ -12,6 +13,7 @@ import ParentComponent from "../components/MusclesParent";
         <MusclesGroupSelector selectedMuscles={["biceps"]} onMuscleChange={() => {}} client:only="react"></MusclesGroupSelector>
         -->
         <ParentComponent client:only="react" />
+        <TrainingEquipmentSelector client:only="react"></TrainingEquipmentSelector>
     </div>         
 </Layout>
 
