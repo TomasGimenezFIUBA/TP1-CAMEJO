@@ -1,5 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import { SignIn } from "auth-astro/components"
+
+const a = import.meta.env.GOOGLE_CLIENT_ID
 ---
 <Layout title="Login">
     <section class="login-section">
@@ -7,7 +10,7 @@ import Layout from "../layouts/Layout.astro"
             <div class="login-box">
                 <div class="login-header">
                     <h1>Login</h1>
-                    <p>Para poder seguir utilizando las funcionalidades de nuestra página debes loguearte</p>
+                    <p>To continue using our features you must login.</p>
                 </div>
                 <form id="login-form" class="login-form">
                     <div class="form-group">
@@ -20,8 +23,11 @@ import Layout from "../layouts/Layout.astro"
                     </div>
                     <button type="submit" class="btn-submit">Submit</button>
                 </form>
+                <ul class="providers">
+                  <SignIn provider="google">Inicia sesion</SignIn>
+                </ul>
                 <div class="register-link">
-                    <p>¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
+                    <p>First time? Click the link and <a href="/sign-up">Register here</a></p>
                 </div>
             </div>
         </div>
@@ -128,5 +134,16 @@ import Layout from "../layouts/Layout.astro"
 
   .register-link a:hover {
     text-decoration: underline;
+  }
+
+  .providers {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    color: black;
+  }
+
+  input {
+    color: black;
   }
 </style>

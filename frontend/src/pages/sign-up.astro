@@ -8,7 +8,7 @@ import Layout from "../layouts/Layout.astro";
             <div class="signup-box">
                 <div class="signup-header">
                     <h1>Sign Up</h1>
-                    <p>Crea una cuenta para acceder a todas las funcionalidades de nuestra página. ¡Únete a nosotros y disfruta de una experiencia personalizada!</p>
+                    <p>Create an account and unlock all our features. Join us and enjoy an incredible and personalized experience!</p>
                 </div>
                 <form id="signup-form" action="/api/signup" method="post">
                     <div class="form-group">
@@ -29,6 +29,9 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                     <button type="submit" class="btn-submit">Sign Up</button>
                 </form>
+                <div class="login-link">
+                  <p>Already have an account? <a href="/login">Login here</a></p>
+                </div>
             </div>
         </div>
     </section>
@@ -129,5 +132,22 @@ import Layout from "../layouts/Layout.astro";
     font-size: 16px;
     font-weight: 500;
     color: #495057;
+  }
+
+  .login-link {
+    margin-top: 20px;
+  }
+
+  .login-link p {
+    color: #6c757d;
+  }
+
+  .login-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
   }
 </style>
