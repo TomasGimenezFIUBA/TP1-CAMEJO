@@ -1,0 +1,112 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Filter from "../components/filter.astro"
+---
+<Layout title="GYM">
+    <Filter></Filter>
+    <ul>
+        <div class="content">
+            <li>
+                <div class="name-calories">
+                    <h2>nombre del ejercicio</h2>
+                    <h3>num de calorias: 1</h3>
+                </div>
+                <div class="used-mucle">
+                    <h2>musculo/s usado/s:</h2>
+                    <h3>pierna</h3>
+                </div>
+                <div class="used-object">
+                    <h2>objeto/s necesario/s:</h2>
+                    <h3>escoba</h3>
+                </div>
+                <button class="button">DELETE</button>
+            </li>
+        </div>
+        <div class="content">
+            <li>
+                <div class="name-calories">
+                    <h2>nombre del ejercicio</h2>
+                    <h3>num de calorias: 1</h3>
+                </div>
+                <div class="used-mucle">
+                    <h2>musculo/s usado/s:</h2>
+                    <h3>pierna</h3>
+                </div>
+                <div class="used-object">
+                    <h2>objeto/s necesario/s:</h2>
+                    <h3>escoba</h3>
+                </div>
+                <button class="button">DELETE</button>
+            </li>
+        </div>
+        <div class="content">
+            <li>
+                <div class="name-calories">
+                    <h2>nombre del ejercicio</h2>
+                    <h3>num de calorias: 1</h3>
+                </div>
+                <div class="used-mucle">
+                    <h2 id="pruebita">musculo/s usado/s:</h2>
+                    <h3>pierna</h3>
+                </div>
+                <div class="used-object">
+                    <h2 id="pruebita">objeto/s necesario/s:</h2>
+                    <h3>escoba</h3>
+                </div>
+                <button class="button">DELETE</button>
+            </li>
+        </div>
+    </ul>
+</Layout>
+<style>
+    ul {
+        position: relative;
+        list-style: none;
+        padding: 0;
+        font-size: 25px;
+        top: 50px;
+    }
+    .content {
+        height: 100px;
+        background-color: rgb(37, 36, 36);
+        border: 1px solid #ffffff44;
+    }
+    li {
+        display: flex;
+    }
+    .name-calories {
+        position: relative;
+        top: 13px;
+        text-align: center;
+        margin-left: 7%;
+        margin-right: 7%;
+        
+    }
+    .used-mucle {
+        position: relative;
+        top: 13px;
+        text-align: center;
+        margin-left: 7%;
+        margin-right: 7%;
+    }
+    .used-object {
+        position: relative;
+        top: 13px;
+        text-align: center;
+        margin-left: 7%;
+        margin-right: 7%;
+    }
+    .button {
+        position: relative;
+        bottom: 13px;
+        margin: 2%;
+        background-color: red;
+        padding-left: 10px;
+        padding-right: 10px;
+        left: 150px;
+        margin-right: 100px;
+        height: 50px;
+        font-size: 23px;
+        border-radius: 5px;
+    }
+</style>
