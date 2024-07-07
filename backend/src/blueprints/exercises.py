@@ -41,10 +41,18 @@ def get_notuser_exercises(user_id):
 @exercise_routes.route('/exercises', methods=['POST']) #! Funciona
 def create_exercise():
     '''Create a new exercise'''
+
+    if 'file' not in request.files: #TODO agregarlo a otro lado asi no repito codigo
+        return jsonify({"error": "No file part"}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    
     try:
         data = request.get_json()
         user_id = data['user_id'] #TODO esto deberia ir en el header
-        exercise = ExerciseService.create_exercise(user_id, data)
+        exercise = ExerciseService.create_exercise(user_id, data, file)
         return jsonify(exercise), 201
     except InvalidExerciseFormatException as e: #TODO agregarle los demas tipos de excepcion
         return jsonify({'error': str(e)}), 400
@@ -54,10 +62,13 @@ def create_exercise():
 @exercise_routes.route('/exercises/<int:exercise_id>', methods=['PUT']) #! Funciona
 def update_exercise(exercise_id):
     '''Update an existing exercise'''
+    
+    file = request.files['file']
+    
     try:
         data = request.get_json()
         user_id = data['user_id']  # Extraer el user_id del JSON del request
-        exercise = ExerciseService.update_exercise(exercise_id, user_id, data)
+        exercise = ExerciseService.update_exercise(exercise_id, user_id, data, file)
         return jsonify(exercise), 200  # Código 200 para indicar éxito
     except InvalidExerciseFormatException as e:  # Manejo de excepciones específicas
         return jsonify({'error': str(e)}), 400

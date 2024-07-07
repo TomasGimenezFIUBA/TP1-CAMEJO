@@ -16,3 +16,4 @@ SQLAlchemy==2.0.31
 typing_extensions==4.12.2
 Werkzeug==3.0.3
 minio==7.1.0
+datetime==5.5

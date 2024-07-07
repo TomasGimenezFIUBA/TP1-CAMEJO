@@ -1,6 +1,7 @@
 from models.models import Exercise, db
 from services.user import UserService
 from services.training_equipments import TrainingEquipmentServices
+from services.image import ImageService
 
 from exceptions.TrainingEquipmentsExecption import TrainingEquipmenteNotFoundException
 from exceptions.UsersExceptions import UserNotFoundException
@@ -12,17 +13,23 @@ class ExerciseService:
     @staticmethod
     def get_all_exercises(page, per_page):
         exercises = Exercise.query.paginate(page=page, per_page=per_page)
+        try:
+            for exercise in exercises.items:
+                exercise.url = ImageService.get_presigned_url(exercise.url)
+        except Exception as e:
+            print(e)
         return [exercise.to_dict() for exercise in exercises]
     
     @staticmethod
     def get_exercise_by_id(exercise_id):
         exercise = Exercise.query.get(exercise_id)
+        exercise.url = ImageService.get_presigned_url(exercise.url)
         if not exercise:
             raise ExerciseNotFoundException(f'User with id {exercise_id} not found')
         return exercise.to_dict()
 
     @staticmethod
-    def create_exercise(user_id, data):
+    def create_exercise(user_id, data, file):
         if 'name' not in data or 'description' not in data or not user_id or 'muscles' not in data or 'equipments' not in data:
             raise InvalidExerciseFormatException(f'Required information is missing')
         
@@ -38,10 +45,12 @@ class ExerciseService:
         if not training_equipments:
             raise TrainingEquipmenteNotFoundException('At least one id is invalid')
         
+        url = ImageService.upload_image(file)
+        
         exercise = Exercise(
             name=data['name'],
             description=data['description'],
-            url=data['url'],
+            url=url,
             calories=int(data['calories']),
             extra_data=data['extra_data'],
             muscles = exercise_muscles,
@@ -49,12 +58,17 @@ class ExerciseService:
             equipments = training_equipments
         )
         
-        db.session.add(exercise)
-        db.session.commit()
+        try :
+            db.session.add(exercise)
+            db.session.commit()
+        except Exception as e:
+            ImageService.delete_image(url)
+            raise e
+        
         return exercise.to_dict()
     
     @staticmethod
-    def update_exercise(exercise_id, user_id, data):
+    def update_exercise(exercise_id, user_id, data, file):
         if 'name' not in data or 'description' not in data or not user_id or 'muscles' not in data or 'equipments' not in data: #? ¿Esta verificación es necesaria?
             raise InvalidExerciseFormatException(f'Required information is missing')
         
@@ -74,17 +88,28 @@ class ExerciseService:
         if not exercise:
             raise ExerciseNotFoundException(f'Exercise with id {exercise_id} not found')
         
+
+        url = data['url']
+
+        if file:
+            url = ImageService.upload_image(file)
+        
         exercise.name = data['name']
         exercise.description = data['description']
-        exercise.url = data['url']
+        exercise.url = url
         exercise.calories = int(data['calories'])
         exercise.extra_data = data['extra_data']
         exercise.muscles = exercise_muscles
         exercise.user_id = user_id
         exercise.equipments = training_equipments   #? ¿Esto se termina modificando?
 
-
-        db.session.commit()
+        try :
+            db.session.commit()
+            ImageService.delete_image(data['url'])
+        except Exception as e:
+            ImageService.delete_image(url)
+            raise e
+        
         return exercise.to_dict()
     
     @staticmethod

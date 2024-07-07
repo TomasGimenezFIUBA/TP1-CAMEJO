@@ -1,5 +1,6 @@
 import os
 
+from datetime import timedelta
 from minio import Minio
 from minio.error import S3Error
 from werkzeug.utils import secure_filename
@@ -21,6 +22,11 @@ class ImageService:
     extension = ['png', 'jpg', 'jpeg', 'gif']
     @staticmethod
     def upload_image(file):
+        MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+        
+        if len(file.read()) > MAX_CONTENT_LENGTH:
+            raise ImagesExceptions(f'File too large. Max size: {MAX_CONTENT_LENGTH} bytes')
+
         if file.filename.split('.')[-1] not in ImageService.extension:
             raise ImagesExceptions(f'Invalid extension {file.filename.split(".")[-1]}. Valid extensions: {ImageService.extension}')
         
@@ -57,5 +63,9 @@ class ImageService:
     @staticmethod
     def generate_hashed_filename(filename):
         hash_object = hashlib.sha256()
-        hash_object.update(filename.encode('utf-8'))
+        hash_object.update(filename.encode('utf-8')) #TODO que sea random el nombre
         return hash_object.hexdigest()
+    
+    @staticmethod
+    def get_presigned_url(filename):
+        return ImageService.minio_client.presigned_get_object(current_configuration.BUCKET_NAME, filename, expires=timedelta(hours=1))
