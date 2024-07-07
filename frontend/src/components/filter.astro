@@ -1,15 +1,57 @@
 <div class="cont-filter">
-    <img src="/person-with-pencil.jpeg" class="imagen" >
-    <img src="/person-with-pencil.jpeg" class="imagen" >
+    <div class="search">
+        <input type="text" placeholder="search" required>
+    </div>
+    <div class="filter">
+        <form class="form">
+            EXERCISE:
+            <select class="option">
+                <option class="option">abs</option>
+                <option class="option">abs</option>
+                <option class="option">algomas</option>
+            </select>              
+        </form>
+        <form class="form">
+            OBJECTS:
+            <select class="option">
+                <option class="option">ALGO</option>
+                <option class="option">ALGO</option>
+                <option class="option">ALGO</option>
+            </select>              
+        </form>
+    </div>
 </div>
 <style>
-    .imagen {
-        height: 200px;
-        width: 200px;
-    }   
     .cont-filter {
-		display: flex;
-		justify-content: center;
-	}
+        display: flex;
+        justify-content: center;
 
+    }
+    .search{
+        position: relative;
+        padding: 5px;
+        top: 30px;
+    }
+    .search input{
+        padding: 20px;
+        font-size: 18px;
+        height: 15px;
+        width: 300px;
+        color: #000000;
+        outline: none;
+        border: 1px solid silver;
+        border-radius: 30px;
+    }
+    .filter {
+        position: relative;
+        display: flex;
+        top: 25px;
+        font-size: 18px;
+    }
+    .form {
+        padding: 20px;
+    }
+    .option {
+        color: black;
+    }
 </style>

@@ -3,33 +3,72 @@ import Layout from "../layouts/Layout.astro"
 ---
 <Layout title="GYM">
     <div class="form">
-        <section>
-            <input type="text" id="exercise-name" name="exercise-name" placeholder="EXERCISE NAME">
-			<input type="text" id="calories-burned" name="calories-burned" placeholder="CALORIES BURNED">
-        </section>
-		<!--to do se deben cambiar las imagenes, por el filtro del cuerpo y las cosas necesarias para hacer ejercico-->
-		<div class="cont-subtit">
-			<h2 class="subtitles" id="body-parts">USED BODY PARTS</h2>
-			<h2 class="subtitles" id="objects">NECESSARY OBJECTS</h2>
-		</div>
-		<div class="cont-filter">
-			<div class="muscles-img">
-				<img src="/person-with-pencil.jpeg" class="imagen">
-			</div>
-			<div class="obajects-img">
-				<img src="/person-with-pencil.jpeg" class="imagen">
-			</div>
-		</div>
-        <div class="buttons">
-			<a href="/">
-            	<button id="back" >back</button>
-			</a>
-            <button id="create">create</button>
+        <!--to do se deben cambiar las imagenes, por el filtro del cuerpo y las cosas necesarias para hacer ejercicio-->
+        <div class="cont-subtit">
+            <h2 class="subtitles" id="body-parts">USED BODY PARTS</h2>
+            <h2 class="subtitles" id="objects">NECESSARY OBJECTS</h2>
         </div>
-    </div>	
+        <div class="cont-filter">
+            <div class="muscles-img">
+                <img src="/person-with-pencil.jpeg" class="imagen">
+            </div>
+            <div class="objects-img">
+                <img src="/person-with-pencil.jpeg" class="imagen">
+            </div>
+        </div>
+        <div class="cont-input">
+            <form id="exercise-form" action="/upload" method="post" enctype="multipart/form-data">
+                <div class="form-class">
+                    <input class="inputs" type="text" id="exercise-name" name="exercisename" placeholder="EXERCISE NAME">
+                    <input class="inputs" type="text" id="calories-burned" name="caloriesburned" placeholder="CALORIES BURNED">
+                </div>
+                <div class="form-class">
+                    <textarea class="inputs" id="description" name="description" rows="4" cols="35" placeholder="EXERCISE DESCRIPTION (OPTIONAL)"></textarea>
+                    <textarea class="inputs" id="comments" name="comments" rows="4" cols="35" placeholder="COMMENTS FROM THE EXERCISE (OPTIONAL)"></textarea>
+                </div>
+                <div class="form-class">
+                    <input type="file" name="archive" accept="image/*, video/*">
+                </div>
+                <div class="buttons">
+                    <a href="/">
+                        <button id="back" type="button">back</button>
+                    </a>
+                    <button id="create-btn" type="submit">create</button>
+                </div>
+            </form>
+        </div>
+    </div>    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('exercise-form');
+            form.onsubmit = function(event) {
+                if (!validateForm(form)) {
+                    event.preventDefault();
+                }
+            };
+
+            function validateForm(form) {
+                const exercisename = form.exercisename.value;
+                const caloriesburned = form.caloriesburned.value;
+
+                if (exercisename.length < 3) {
+                    alert("El nombre del ejercicio debe tener al menos 3 caracteres");
+                    return false;
+                }
+
+                if (caloriesburned.length < 1) {
+                    alert("Las calorías quemadas deben tener al menos 1 carácter");
+                    return false;
+                }
+
+                return true;
+            }
+        });
+    </script>
 </Layout>
-<style>
-	input {
+<style> 	
+	form {
 		font-size: 23px;
 	}
 	button {
@@ -54,20 +93,28 @@ import Layout from "../layouts/Layout.astro"
 		display: flex;
 		justify-content: center;		
 	}
-	.form {
+	.form-class {
 		position: relative;
 		display: flex;
-		flex-direction: column;
 		text-align: center;
-		margin-left: 350px;
-		margin-right: 350px;
-		margin-bottom: 200px ;
-		background-color: rgb(37, 36, 36);
-		top: 100px;
+		margin-left: 50px;
+		justify-content: center;
+		margin-right: 30px;
+		margin-bottom: 50px;
 	}
-	#exercise-name {
+	.cont-input {
+		position: relative;
+		margin-left: 700px;
+	}
+	.inputs {
 		color: black;
-		margin: 30px;
+		margin: 15px;
+	}
+	#description {
+		color: black;
+	}
+	#comments {
+		color: black;
 	}
 	#back {
 		margin: 10px;
@@ -78,7 +125,7 @@ import Layout from "../layouts/Layout.astro"
 		background-color: black;
 		color: rgba(0, 255, 55, 0.716);
 	}
-	#create {
+	#create-btn {
 		margin: 10px;
 		padding-top: 5px;
 		padding-bottom: 5px;
@@ -87,5 +134,4 @@ import Layout from "../layouts/Layout.astro"
 		background-color: black;
 		color: rgba(0, 255, 55, 0.716);	
 	}
-
 </style>
