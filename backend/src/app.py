@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 from models.models import db
 from blueprints.users import user_routes
 from blueprints.exercises import exercise_routes
+from blueprints.training_equipments import training_equipments_routes
 from config import config
 from services.image import ImageService
 
@@ -18,24 +19,19 @@ app.config.from_object(config[env_name])
 
 app.register_blueprint(user_routes, url_prefix='/api/v1')
 app.register_blueprint(exercise_routes, url_prefix='/api/v1')
-
+app.register_blueprint(training_equipments_routes, url_prefix='/api/v1')
 @app.route("/")
 def hello():
     return "Hello world"
 
 @app.route("/upload-image", methods=['POST'])
 def upload_image(): #curl -X POST -F 'file=@./frontend/public/logo.png' http://localhost:8002/upload-image
-    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
-
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
     
     file = request.files['file']
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
-    
-    if file.content_length > MAX_CONTENT_LENGTH:
-        return jsonify({"error": "File is too big"}), 400
 
     ImageService.upload_image(file)
     return jsonify({"message": "Image uploaded"})

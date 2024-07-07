@@ -1,8 +1,12 @@
+import base64
 import os
 from flask import Flask
 
-from src.models.models import DetailedExerciseForRoutine, Exercise, Routine, TrainingEquipment, User, db
-from src.config import config
+from models.models import DetailedExerciseForRoutine, Exercise, Routine, TrainingEquipment, User, db
+from config import config
+from services.image import ImageService
+
+RESOURCE_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)),'..', 'resources')
 
 #from app.models import db, User, Exercise, Routine, DetailedExerciseForRoutine, TrainingEquipment
 env_name = os.getenv('FLASK_ENV', 'development')
@@ -25,7 +29,21 @@ def initialize_db():
 
         # Crear datos de ejemplo para TrainingEquipment
         equipment_names = ['Bar', 'Dumbbells', 'Mat', 'Discs', 'Incline Bench', 'Pull-up Bar']
-        equipments = [TrainingEquipment(name=name) for name in equipment_names]
+        equipments = [TrainingEquipment(name=name, url=f'{name}.jpeg') for name in equipment_names]
+
+        '''
+        # Subir imágenes de equipos, no funciona bien porq el image del request es distinto
+        images = []
+        for eq in equipments:
+            image_path = os.path.join(RESOURCE_FOLDER, eq.url)
+            print(image_path)
+            if os.path.isfile(image_path):
+                with open(image_path, 'rb') as image_file:
+                    images.append(image_file.read())
+
+        for i, eq in enumerate(equipments):
+            eq.url = ImageService.upload_image(images[i])
+        '''    
 
         # Crear usuarios de ejemplo
         users = [
