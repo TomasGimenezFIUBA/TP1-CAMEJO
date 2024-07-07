@@ -1,4 +1,6 @@
 ---
+import ParentComponent from "../components/MusclesParent";
+import TrainingEquipmentSelector from "../components/TrainingEquipmentSelector";
 import Layout from "../layouts/Layout.astro"
 ---
 <Layout title="GYM">
@@ -8,23 +10,28 @@ import Layout from "../layouts/Layout.astro"
             <h2 class="subtitles" id="body-parts">USED BODY PARTS</h2>
             <h2 class="subtitles" id="objects">NECESSARY OBJECTS</h2>
         </div>
-        <div class="cont-filter">
-            <div class="muscles-img">
+        <div class="cont-filter lg:flex">
+			<div>
+				<ParentComponent client:only="react" />
+			</div>
+			<TrainingEquipmentSelector client:only="react" />
+			
+            <!--<div class="muscles-img">
                 <img src="/person-with-pencil.jpeg" class="imagen">
             </div>
             <div class="objects-img">
                 <img src="/person-with-pencil.jpeg" class="imagen">
-            </div>
+            </div>-->
         </div>
         <div class="cont-input">
             <form id="exercise-form" action="/upload" method="post" enctype="multipart/form-data">
                 <div class="form-class">
-                    <input class="inputs" type="text" id="exercise-name" name="exercisename" placeholder="EXERCISE NAME">
-                    <input class="inputs" type="text" id="calories-burned" name="caloriesburned" placeholder="CALORIES BURNED">
+                    <input class="inputs" type="text" id="exercise-name" name="exercisename" placeholder="EXERCISE NAME" required>
+                    <input class="inputs" type="number" id="calories-burned" name="caloriesburned" placeholder="CALORIES BURNED" required>
                 </div>
                 <div class="form-class">
-                    <textarea class="inputs" id="description" name="description" rows="4" cols="35" placeholder="EXERCISE DESCRIPTION (OPTIONAL)"></textarea>
-                    <textarea class="inputs" id="comments" name="comments" rows="4" cols="35" placeholder="COMMENTS FROM THE EXERCISE (OPTIONAL)"></textarea>
+                    <textarea class="inputs" id="description" name="description" rows="4" placeholder="EXERCISE DESCRIPTION (OPTIONAL)"></textarea>
+                    <textarea class="inputs" id="comments" name="comments" rows="4" placeholder="COMMENTS FROM THE EXERCISE (OPTIONAL)"></textarea>
                 </div>
                 <div class="form-class">
                     <input type="file" name="archive" accept="image/*, video/*">
@@ -67,71 +74,94 @@ import Layout from "../layouts/Layout.astro"
         });
     </script>
 </Layout>
-<style> 	
-	form {
-		font-size: 23px;
-	}
-	button {
-		font-size: 30px;
-	}
-	.subtitles {
-		font-family: inherit;
-		font-size: 20px;
-		color: rgba(0, 255, 55, 0.716);
-	}
-	.cont-subtit {
-		display: flex;
-		justify-content: center;
-	}
-	#body-parts {
-		margin-right: 22%;
-	}
-	#objects {
-		margin-left: 22%;
-	}
-	.cont-filter {
-		display: flex;
-		justify-content: center;		
-	}
-	.form-class {
-		position: relative;
-		display: flex;
-		text-align: center;
-		margin-left: 50px;
-		justify-content: center;
-		margin-right: 30px;
-		margin-bottom: 50px;
-	}
-	.cont-input {
-		position: relative;
-		margin-left: 700px;
-	}
-	.inputs {
-		color: black;
-		margin: 15px;
-	}
-	#description {
-		color: black;
-	}
-	#comments {
-		color: black;
-	}
-	#back {
-		margin: 10px;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		padding-left: 40px;
-		padding-right: 40px;
-		background-color: black;
-		color: rgba(0, 255, 55, 0.716);
-	}
-	#create-btn {
-		margin: 10px;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		padding-left: 40px;
-		padding-right: 40px;
-		background-color: black;
-		color: rgba(0, 255, 55, 0.716);	
-	}
+
+<style>     
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+    .form {
+        width: 95%;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    .subtitles {
+        font-size: 1.5rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .cont-subtit {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    .cont-filter {
+        /*display: flex;*/
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    .muscles-img, .objects-img {
+        flex: 1;
+        margin: 0 1rem;
+    }
+    .imagen {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .form-class {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+    .inputs {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    .inputs:focus {
+        border-color: #28a745;
+        outline: none;
+    }
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+    button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #back {
+        background-color: #6c757d;
+        color: #fff;
+    }
+    #create-btn {
+        background-color: #28a745;
+        color: #fff;
+    }
+    @media (max-width: 768px) {
+        .form {
+            margin: 1rem;
+            padding: 1rem;
+        }
+        .buttons {
+            flex-direction: column;
+        }
+        #back, #create-btn {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+    }
 </style>

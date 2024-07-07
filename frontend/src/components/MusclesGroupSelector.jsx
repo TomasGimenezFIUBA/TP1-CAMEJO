@@ -105,7 +105,7 @@ const MusclesGroupSelector = ({ selectedMuscles, onMuscleChange }) => {
       }, [selectedMuscles]);
 
     return (
-        <div className="muscle-groups w-full sm:w-1/2 md:w-96 lg:w-1/2">
+        <div className="muscle-groups w-full">
             <h1>Muscle Group Selector</h1>
             <div class="content">
                 <div class="inputs">
