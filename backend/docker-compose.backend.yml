@@ -41,6 +41,7 @@ services:
       - FLASK_ENV=${FLASK_ENV}
       - DATABASE_URL=${DATABASE_URL}
       - API_PORT=${API_PORT}
+      - MINIO_URL=${MINIO_URL}
   
   # MinIO es donde vamos a guardar las imagenes/videos
   minio:
@@ -54,6 +55,8 @@ services:
    ports:
      - "9000:9000"
    command: server /data
+   networks:
+     - intro-tp1-db
 
   ## mc es el cliente para interactuar con MinIO TODO arreglar
   mc:

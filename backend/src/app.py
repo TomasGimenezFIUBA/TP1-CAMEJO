@@ -14,7 +14,7 @@ from services.image import ImageService
 env_name = os.getenv('FLASK_ENV', 'development')
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 # Cargar configuración según el entorno
 app.config.from_object(config[env_name])
 

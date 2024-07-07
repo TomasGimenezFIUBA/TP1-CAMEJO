@@ -11,7 +11,6 @@ from config import config
 
 env_name = os.getenv('FLASK_ENV', 'development') # TODO no deberia de estar aca  ya que se repite con el app.py
 current_configuration = config[env_name]
-
 class ImageService:
     minio_client = Minio(
         current_configuration.MINIO_URL.replace('http://', ''),
