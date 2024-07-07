@@ -7,23 +7,7 @@ import Filter from "../components/filter.astro"
     <ul>
         <div class="content">
             <li>
-                <div class="name-calories">
-                    <h2>nombre del ejercicio</h2>
-                    <h3>num de calorias: 1</h3>
-                </div>
-                <div class="used-mucle">
-                    <h2>musculo/s usado/s:</h2>
-                    <h3>pierna</h3>
-                </div>
-                <div class="used-object">
-                    <h2>objeto/s necesario/s:</h2>
-                    <h3>escoba</h3>
-                </div> 
-                <button class="button">AGGREGATE</button>
-            </li>
-        </div>
-        <div class="content">
-            <li>
+                <img src="/person-with-pencil.jpeg" class="img">
                 <div class="name-calories">
                     <h2>nombre del ejercicio</h2>
                     <h3>num de calorias: 1</h3>
@@ -36,24 +20,10 @@ import Filter from "../components/filter.astro"
                     <h2>objeto/s necesario/s:</h2>
                     <h3>escoba</h3>
                 </div>
-                <button class="button">AGGREGATE</button>
-            </li>
-        </div>
-        <div class="content">
-            <li>
-                <div class="name-calories">
-                    <h2>nombre del ejercicio</h2>
-                    <h3>num de calorias: 1</h3>
-                </div>
-                <div class="used-mucle">
-                    <h2 id="pruebita">musculo/s usado/s:</h2>
-                    <h3>pierna</h3>
-                </div>
-                <div class="used-object">
-                    <h2 id="pruebita">objeto/s necesario/s:</h2>
-                    <h3>escoba</h3>
-                </div>
-                <button class="button">AGGREGATE</button>
+                <a href="/" class="edit-link">
+                    <button class="button-edit">✏️</button>             
+                </a>
+                <button class="button-aggregate">AGGREGATE</button>
             </li>
         </div>
     </ul>
@@ -65,6 +35,7 @@ import Filter from "../components/filter.astro"
         padding: 0;
         font-size: 25px;
         top: 50px;
+        margin-bottom: 50px;
     }
     .content {
         height: 100px;
@@ -74,39 +45,59 @@ import Filter from "../components/filter.astro"
     li {
         display: flex;
     }
+    .img {
+        position: relative;
+        top: 6px;
+        text-align: center;
+        margin-left: 2%;
+        margin-right: 2%;
+        width: 85px;
+        height: 85px;
+    }
     .name-calories {
         position: relative;
         top: 13px;
         text-align: center;
-        margin-left: 7%;
-        margin-right: 7%;
+        margin-left: 5%;
+        margin-right: 5%;
         
     }
     .used-mucle {
         position: relative;
         top: 13px;
         text-align: center;
-        margin-left: 7%;
-        margin-right: 7%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
     .used-object {
         position: relative;
         top: 13px;
         text-align: center;
-        margin-left: 7%;
-        margin-right: 7%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
-    .button {
+    .button-edit {
         position: relative;
-        bottom: 13px;
+        top: 20px;
         margin: 2%;
-        background-color: rgba(8, 0, 255, 0.526);
+        background-color: green;
         padding-left: 10px;
         padding-right: 10px;
-        left: 150px;
+        left: 120px;
         margin-right: 100px;
         height: 50px;
         font-size: 23px;
-        border-radius: 5px;
+        border-radius: 100%;
+    }
+    .button-aggregate {
+        position: relative;
+        top: 23px;
+        background-color: rgba(47, 0, 255, 0.655);
+        padding-left: 10px;
+        padding-right: 10px;
+        left: 120px;
+        height: 50px;
+        font-size: 23px;
+        border-radius: 10px;
     }
 </style>
