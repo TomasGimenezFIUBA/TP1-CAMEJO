@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 from models.models import db
 from blueprints.users import user_routes
@@ -13,7 +14,7 @@ from services.image import ImageService
 env_name = os.getenv('FLASK_ENV', 'development')
 
 app = Flask(__name__)
-
+CORS(app)
 # Cargar configuración según el entorno
 app.config.from_object(config[env_name])
 

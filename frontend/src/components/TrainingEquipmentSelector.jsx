@@ -2,44 +2,7 @@ import { useEffect, useState } from "react";
 import './styles/TrainingEquipmentSelector.css';
 
 const TrainingEquipmentSelector = () => {
-  const equipments = [
-    {
-      id: 1,
-      name: 'Equipamiento 1',
-      url: '/path/to/image1.jpg'
-    },
-    {
-      id: 2,
-      name: 'Equipamiento 2',
-      url: '/path/to/image2.jpg'
-    },
-    {
-      id: 3,
-      name: 'Equipamiento 3',
-      url: '/path/to/image3.jpg'
-    },
-    {
-      id: 4,
-      name: 'Equipamiento 4',
-      url: '/path/to/image4.jpg'
-    },
-    {
-      id: 5,
-      name: 'Equipamiento 5',
-      url: '/path/to/image5.jpg'
-    },
-    {
-      id: 6,
-      name: 'Equipamiento 6',
-      url: '/path/to/image6.jpg'
-    },
-    {
-      id: 7,
-      name: 'Equipamiento 7',
-      url: '/path/to/image7.jpg'
-    }
-  ];
-
+  const [equipments, setEquipments] = useState([])
   const [startIndex, setStartIndex] = useState(0);
   const itemsPerPage = 4;
 
@@ -68,11 +31,22 @@ const TrainingEquipmentSelector = () => {
     else
       newSelectedEquipments = [...selectedEquipments, equipments.find(e => e.id === equipmentId)]
 
-    console.log(newSelectedEquipments)
     setSelectedEquipments(newSelectedEquipments)
   }
 
-  useEffect(() => console.log(selectedEquipments), [selectedEquipments])
+  const fetchTrainingEquipments = async () => {
+    try {
+      const response = await fetch('http://localhost:8002/api/v1/training_equipments');
+      const data = await response.json();
+      setEquipments(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchTrainingEquipments();
+  },[])
 
   return (
     <div className="equipment-selector">
