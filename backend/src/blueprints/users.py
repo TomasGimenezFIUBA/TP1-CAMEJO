@@ -5,7 +5,7 @@ from exceptions.UsersExceptions import UserNotFoundException, InvalidUserFormatE
 
 user_routes = Blueprint('user_routes', __name__)
 
-@user_routes.route('/users', methods=['GET'])
+@user_routes.route('/users', methods=['GET']) #! funciona
 def list_all_users():
     '''List all users'''
     try:
@@ -20,31 +20,45 @@ def get_user_by_id(user_id):
     try:
         user = UserService.get_user_by_id(user_id)
         return jsonify(user), 200
-    
+
     except UserNotFoundException as e:
-        jsonify({'error': e.message}), 404
+        return jsonify({'error': e.message}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@user_routes.route('/users', methods=['POST'])
+@user_routes.route('/users/exercises/<int:user_id>', methods=['GET']) #! Funciona LE MANDE UN "/" EXTRA, EL /EXERCISES, PARA DIFERENCIAR 
+def get_user_exercises(user_id):
+    '''Get exercises from a ID'''
+    try:
+        user = UserService.get_user_exercises(user_id)
+        return jsonify(user), 200
+    
+    except UserNotFoundException as e:      #? Esta bien los excepts?
+        return jsonify({'error': e.message}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500    
+
+@user_routes.route('/users', methods=['POST']) #! Funciona
 def create_user():
     '''Create a new user'''
     try:
         data = request.get_json()
         user = UserService.create_user(data)
         return jsonify(user), 201
+    
     except InvalidUserFormatException as e:
         return jsonify({'error': str(e)}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@user_routes.route('/users/<int:user_id>', methods=['PUT'])
+@user_routes.route('/users/<int:user_id>', methods=['PUT'])  #! Funciona
 def update_user(user_id):
     '''Update an existing user'''
     try:
         data = request.get_json()
         user = UserService.update_user(user_id, data)
         return jsonify(user), 200
+    
     except UserNotFoundException as e:
         return jsonify({'error': e.message}), 404
     except InvalidUserFormatException as e:
@@ -52,16 +66,15 @@ def update_user(user_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-'''
- @user_routes.route('/users/<int:user_id>', methods=['DELETE'])
+@user_routes.route('/users/<int:user_id>', methods=['DELETE']) #! Hay ciertos usuarios que no me elimina
 def delete_user(user_id):
-    ''Delete a user''
+    '''Delete a user'''
     try:
         result = UserService.delete_user(user_id)
         if result:
             return jsonify({'message': 'User deleted'}), 200
         else:
             return jsonify({'error': 'User not found'}), 404
+        
     except Exception as e:
         return jsonify({'error': str(e)}), 500 
-'''

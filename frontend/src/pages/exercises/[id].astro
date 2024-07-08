@@ -1,0 +1,222 @@
+---
+import MusclesGroupSelector from "../../components/MusclesGroupSelector";
+import TrainingEquipmentSelector from "../../components/TrainingEquipmentSelector";
+import Layout from "../../layouts/Layout.astro"
+
+const { id } = Astro.params;
+let exercise;
+
+if (id) {
+    const res = await fetch(`http://localhost:8002/api/v1/exercises/${id}`); // cambiar a api para docker en vez de localhost
+    exercise = await res.json();
+    console.log(exercise);
+}
+---
+
+<Layout title="GYM">
+    <div class="form">
+        <div class="cont-filter lg:flex">
+            <div class="lg:w-2/3">
+                <MusclesGroupSelector initialSelectedMuscles={exercise?.muscles} client:only="react" />
+            </div>
+            <TrainingEquipmentSelector initialSelectedEquipment={exercise?.equipments} client:only="react" />
+        </div>
+        <div class="cont-input">
+            <form id="exercise-edit-form" enctype="multipart/form-data">
+                <div class="form-class">
+                    <input class="inputs" type="text" id="exercise-name" value={exercise?.name} name="exercisename" placeholder="EXERCISE NAME" required>
+                    <input class="inputs" type="number" id="calories-burned" value={exercise?.calories} name="caloriesburned" placeholder="CALORIES BURNED" required>
+                </div>
+                <div class="form-class">
+                    <textarea class="inputs" id="description" name="description" value={exercise?.description} rows="4" placeholder="EXERCISE DESCRIPTION (OPTIONAL)"></textarea>
+                    <textarea class="inputs" id="comments" name="comments" rows="4" value={exercise?.comments} placeholder="COMMENTS FROM THE EXERCISE (OPTIONAL)"></textarea>
+                </div>
+                <div class="form-class">
+                    <img src={exercise?.url} />
+                    <input type="file" name="file" accept="image/*, video/*">
+                </div>
+                <div class="buttons">
+                    <a href="/">
+                        <button id="back" type="button">back</button>
+                    </a>
+                    <button id="update-btn" type="submit">update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('exercise-edit-form');
+            let selectedMuscles = [];
+            let selectedEquipment = [];
+
+            form.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                if (!validateForm(form)) {
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('file', form.file.files[0]);
+                formData.append('name', form.exercisename.value);
+                formData.append('calories', form.caloriesburned.value);
+                formData.append('description', form.description.value);
+                formData.append('extra_data', form.comments.value);
+                formData.append('muscles', selectedMuscles.join(';'));
+                formData.append('equipments', JSON.stringify(selectedEquipment.map(equipment => equipment.id)));
+                formData.append('user_id', 1);
+
+                try {
+                    const idExercise = window.location.pathname.split('/')[2];
+
+                    const response = await fetch(`http://localhost:8002/api/v1/exercises/`+idExercise, {
+                        method: 'PUT',
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+                    if (response.status !== 200) {
+                        alert(result.message);
+                    }
+                    window.location.href = '/';
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            function validateForm(form) {
+                const exercisename = form.exercisename.value;
+                const caloriesburned = form.caloriesburned.value;
+                const file = form.file.files[0];
+
+                if (exercisename.length < 3) {
+                    alert("El nombre del ejercicio debe tener al menos 3 caracteres");
+                    return false;
+                }
+
+                if (caloriesburned.length < 1 || isNaN(caloriesburned)) {
+                    alert("Las calorías quemadas deben tener al menos 1 carácter");
+                    return false;
+                }
+
+                if (selectedMuscles.length < 1) {
+                    alert("Debe seleccionar al menos un grupo muscular");
+                    return false;
+                }
+
+                if (selectedEquipment.length < 1) {
+                    alert("Debe seleccionar al menos un equipo");
+                    return false;
+                }
+
+                if (!file || file.size > 10485760 || (!file.type.includes('image') && !file.type.includes('video'))) {
+                    alert("El archivo no debe superar 10MB y debe ser imagen o video");
+                    return false;
+                }
+
+                return true;
+            }
+
+            window.addEventListener('musclesSelectionChange', (event) => {
+                selectedMuscles = event.detail;
+            });
+
+            window.addEventListener('equipmentSelectionChange', (event) => {
+                selectedEquipment = event.detail;
+            });
+        });
+    </script>
+</Layout>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+    .form {
+        width: 95%;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        color: #333;
+    }
+    .subtitles {
+        font-size: 1.5rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .cont-subtit {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    .cont-filter {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    .muscles-img, .objects-img {
+        flex: 1;
+        margin: 0 1rem;
+    }
+    .imagen {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .form-class {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+    .inputs {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    .inputs:focus {
+        border-color: #28a745;
+        outline: none;
+    }
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+    button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #back {
+        background-color: #6c757d;
+        color: #fff;
+    }
+    #update-btn {
+        background-color: #28a745;
+        color: #fff;
+    }
+    @media (max-width: 768px) {
+        .form {
+            margin: 1rem;
+            padding: 1rem;
+        }
+        .buttons {
+            flex-direction: column;
+        }
+        #back, #update-btn {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+    }
+</style>

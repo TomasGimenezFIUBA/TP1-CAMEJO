@@ -1,0 +1,36 @@
+---
+import Layout from "../layouts/Layout.astro";
+//import MusclesGroupSelector from "../components/MusclesGroupSelector.astro";
+import MusclesGroupSelector from "../components/MusclesGroupSelector.jsx";
+import ParentComponent from "../components/MusclesParent";
+import TrainingEquipmentSelector from "../components/TrainingEquipmentSelector";
+
+let initialData = ["biceps", "triceps", "forearms"];
+---
+
+<Layout title="demos">
+    <div class="w-full h-full min-h-lvh">
+        <!-- 
+            <MusclesGroupSelector> </MusclesGroupSelector>
+        <MusclesGroupSelector selectedMuscles={["biceps"]} onMuscleChange={() => {}} client:only="react"></MusclesGroupSelector>
+        -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                window.addEventListener('musclesSelectionChange', (event) => {
+                handleDataChange(event);
+                });
+            });
+
+            function handleDataChange(event) {
+                console.log("Updated data from React component:", event.detail);
+            }
+        </script>
+        <button id="btn">click me</button>
+        <TrainingEquipmentSelector client:only="react" />
+        <MusclesGroupSelector initialSelectedMuscles={initialData} client:only="react" />
+    </div>         
+</Layout>
+
+<style>
+  
+</style>
