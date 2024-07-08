@@ -10,8 +10,17 @@ class ExerciseService:
     available_muscles =  ["biceps", "deltoids", "forearms", "triceps", "trapezius", "lats", "abs", "obliques", "pectorals", "adductors", "calves", "hamstrings", "glutes", "quads"]#atributo muscles="bicep;chest;"
 
     @staticmethod
-    def get_all_exercises(page, per_page):
-        exercises = Exercise.query.paginate(page=page, per_page=per_page)
+    def get_all_exercises(page, per_page, by_user_id=None, not_by_user_id=None):
+        
+        query = Exercise.query
+
+        if by_user_id is not None:
+            query = query.filter_by(user_id=by_user_id)
+        if not_by_user_id is not None:
+            query = query.filter(Exercise.user_id != not_by_user_id)
+
+        exercises = Exercise.query.paginate(page=page, per_page=per_page, error_out=False)
+
         try:
             for exercise in exercises.items:
                 exercise.url = ImageService.get_presigned_url(exercise.url)
@@ -107,7 +116,7 @@ class ExerciseService:
         return response
     
     @staticmethod
-    def delete_exercise(exercise_id): #! ???
+    def delete_exercise(exercise_id): 
         exercise = Exercise.query.filter_by(id=exercise_id).first()
         
         if not exercise:

@@ -10,9 +10,10 @@ def list_all_exercises():
     '''List all excercises'''
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 10))
-
+    by_user_id = request.args.get('by_user_id', None, type=int)
+    not_by_user_id = request.args.get('not_by_user_id', None, type=int)
     try:
-        exercises = ExerciseService.get_all_exercises(page=page, per_page=per_page)
+        exercises = ExerciseService.get_all_exercises(page=page, per_page=per_page, by_user_id=by_user_id, not_by_user_id=not_by_user_id)
         return jsonify(exercises), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
