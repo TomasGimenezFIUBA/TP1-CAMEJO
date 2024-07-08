@@ -37,27 +37,6 @@ def get_notuser_exercises(user_id):
         return jsonify(exercise), 200
     except ExerciseNotFoundException as e:
         return jsonify({'error': str(e)}), 404
-
-@exercise_routes.route('/exercises', methods=['POST']) #! Funciona
-def create_exercise():
-    '''Create a new exercise'''
-
-    if 'file' not in request.files: #TODO agregarlo a otro lado asi no repito codigo
-        return jsonify({"error": "No file part"}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-    
-    try:
-        data = request.get_json()
-        user_id = data['user_id'] #TODO esto deberia ir en el header
-        exercise = ExerciseService.create_exercise(user_id, data, file)
-        return jsonify(exercise), 201
-    except InvalidExerciseFormatException as e: #TODO agregarle los demas tipos de excepcion
-        return jsonify({'error': str(e)}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
     
 @exercise_routes.route('/exercises/<int:exercise_id>', methods=['PUT']) #! Funciona
 def update_exercise(exercise_id):
@@ -66,8 +45,15 @@ def update_exercise(exercise_id):
     file = request.files['file']
     
     try:
-        data = request.get_json()
-        user_id = data['user_id']  # Extraer el user_id del JSON del request
+        data = {
+            'name': request.form.get('name'),
+            'description': request.form.get('description'),
+            'muscles': request.form.get('muscles'),
+            'equipments': request.form.get('equipments'),
+            'calories': request.form.get('calories'),
+            'extra_data': request.form.get('extra_data')
+        }
+        user_id = request.form.get('user_id') #todo extraerlo del header
         exercise = ExerciseService.update_exercise(exercise_id, user_id, data, file)
         return jsonify(exercise), 200  # Código 200 para indicar éxito
     except InvalidExerciseFormatException as e:  # Manejo de excepciones específicas
@@ -91,3 +77,29 @@ def delete_exercise(exercise_id):
             return jsonify({'error': 'Exercise not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500 
+    
+@exercise_routes.route("/exercises", methods=['POST'])
+def create_exercise(): #curl -X POST -F 'file=@./frontend/public/logo.png' http://localhost:8002/upload-image
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    data = {
+        'name': request.form.get('name'),
+        'description': request.form.get('description'),
+        'muscles': request.form.get('muscles'),
+        'equipments': request.form.get('equipments'),
+        'calories': request.form.get('calories'),
+        'extra_data': request.form.get('extra_data')
+    }
+
+    user_id = request.form.get('user_id')
+
+    try:
+        exercise = ExerciseService.create_exercise(user_id, data, file)
+        return jsonify(exercise), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

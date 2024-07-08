@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import './styles/TrainingEquipmentSelector.css';
 
-const TrainingEquipmentSelector = () => {
+const TrainingEquipmentSelector = ({initialSelectedEquipment}) => {
   const [equipments, setEquipments] = useState([])
   const [startIndex, setStartIndex] = useState(0);
-  const itemsPerPage = 4;
+  const itemsPerPage = 4; //todo make this a prop
 
   const handleNext = () => {
     const nextIndex = startIndex + itemsPerPage;
@@ -22,7 +22,7 @@ const TrainingEquipmentSelector = () => {
 
   const visibleEquipments = equipments.slice(startIndex, startIndex + itemsPerPage);
 
-  const [selectedEquipments, setSelectedEquipments] = useState([])
+  const [selectedEquipments, setSelectedEquipments] = useState(initialSelectedEquipment || [])
   
   const handleEquipmentSelection = (equipmentId) => {
     let newSelectedEquipments = selectedEquipments
@@ -39,6 +39,7 @@ const TrainingEquipmentSelector = () => {
       const response = await fetch('http://localhost:8002/api/v1/training_equipments');
       const data = await response.json();
       setEquipments(data);
+      setSelectedEquipments(data.filter(e => initialSelectedEquipment.map(eq => eq.id).includes(e.id)) || [])
     } catch (error) {
       console.error(error);
     }
@@ -47,6 +48,11 @@ const TrainingEquipmentSelector = () => {
   useEffect(() => {
     fetchTrainingEquipments();
   },[])
+
+  useEffect(() => {
+    const event = new CustomEvent('equipmentSelectionChange', { detail: selectedEquipments });
+    window.dispatchEvent(event);
+  },[selectedEquipments])
 
   return (
     <div className="equipment-selector">

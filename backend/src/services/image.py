@@ -29,17 +29,18 @@ class ImageService:
         if file.filename.split('.')[-1] not in ImageService.extension:
             raise ImagesExceptions(f'Invalid extension {file.filename.split(".")[-1]}. Valid extensions: {ImageService.extension}')
         
+        file.seek(0)
         filename = secure_filename(file.filename)
         file_path = os.path.join('/tmp', filename)
         file.save(file_path)
-
+        
         found = ImageService.minio_client.bucket_exists(current_configuration.BUCKET_NAME)
         if not found:
             raise S3Error('Bucket not found')
        
         hashed_name = ImageService.generate_hashed_filename(filename) + '.' + filename.split('.')[-1]
         ImageService.minio_client.fput_object(current_configuration.BUCKET_NAME, hashed_name, file_path)
-        url = ImageService.minio_client.presigned_get_object(current_configuration.BUCKET_NAME, filename)
+        url = ImageService.minio_client.presigned_get_object(current_configuration.BUCKET_NAME, hashed_name) #antes no estaba hashed_name
         os.remove(file_path)
 
         return url

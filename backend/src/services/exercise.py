@@ -1,14 +1,13 @@
+import json
 from models.models import Exercise, db
 from services.user import UserService
 from services.training_equipments import TrainingEquipmentServices
 from services.image import ImageService
 
-from exceptions.TrainingEquipmentsExecption import TrainingEquipmenteNotFoundException
-from exceptions.UsersExceptions import UserNotFoundException
 from exceptions.ExercisesExceptions import ExerciseNotFoundException, InvalidExerciseFormatException
 
 class ExerciseService:
-    available_muscles = ["bicep", 'tricep', 'shoulders', 'chest'] #atributo muscles="bicep;chest;"
+    available_muscles =  ["biceps", "deltoids", "forearms", "triceps", "trapezius", "lats", "abs", "obliques", "pectorals", "adductors", "calves", "hamstrings", "glutes", "quads"]#atributo muscles="bicep;chest;"
 
     @staticmethod
     def get_all_exercises(page, per_page):
@@ -37,20 +36,17 @@ class ExerciseService:
         if not all(elem in ExerciseService.available_muscles for elem in exercise_muscles):
             raise InvalidExerciseFormatException(f'Muscles must be {ExerciseService.available_muscles}')
         
-        user = UserService.get_user_by_id(user_id)
-        if not user:
-            raise UserNotFoundException(f'User with id does not exists')
+        UserService.get_user_by_id(user_id)
 
-        training_equipments = TrainingEquipmentServices.get_equipments_by_ids(data['equipments'])
-        if not training_equipments:
-            raise TrainingEquipmenteNotFoundException('At least one id is invalid')
-        
+        training_equipments = TrainingEquipmentServices.get_equipments_by_ids(json.loads(data['equipments']))
+
         url = ImageService.upload_image(file)
-        
+        filename = url[url.rfind('/') + 1: url.rfind('?')]
+
         exercise = Exercise(
             name=data['name'],
             description=data['description'],
-            url=url,
+            url=filename,
             calories=int(data['calories']),
             extra_data=data['extra_data'],
             muscles = exercise_muscles,
@@ -62,10 +58,12 @@ class ExerciseService:
             db.session.add(exercise)
             db.session.commit()
         except Exception as e:
-            ImageService.delete_image(url)
+            ImageService.delete_image(filename)
             raise e
         
-        return exercise.to_dict()
+        response = exercise.to_dict()
+        response['url'] = url
+        return response
     
     @staticmethod
     def update_exercise(exercise_id, user_id, data, file):
@@ -76,19 +74,13 @@ class ExerciseService:
         if not all(elem in ExerciseService.available_muscles for elem in exercise_muscles):
             raise InvalidExerciseFormatException(f'Muscles must be {ExerciseService.available_muscles}')
 
-        
-        user = UserService.get_user_by_id(user_id)
-        if not user:
-            raise UserNotFoundException(f'User with id does not exists')
-
-        training_equipments = TrainingEquipmentServices.get_equipments_by_ids(data['equipments'])
-        if not training_equipments:
-            raise TrainingEquipmenteNotFoundException('At least one id is invalid')
         exercise = Exercise.query.get(exercise_id)
         if not exercise:
             raise ExerciseNotFoundException(f'Exercise with id {exercise_id} not found')
         
-
+        UserService.get_user_by_id(user_id)
+        training_equipments = TrainingEquipmentServices.get_equipments_by_ids(data['equipments'])
+        
         url = data['url']
 
         if file:
@@ -96,7 +88,7 @@ class ExerciseService:
         
         exercise.name = data['name']
         exercise.description = data['description']
-        exercise.url = url
+        exercise.url = url[url.rfind('/') + 1: url.rfind('?')]
         exercise.calories = int(data['calories'])
         exercise.extra_data = data['extra_data']
         exercise.muscles = exercise_muscles
@@ -107,10 +99,12 @@ class ExerciseService:
             db.session.commit()
             ImageService.delete_image(data['url'])
         except Exception as e:
-            ImageService.delete_image(url)
+            ImageService.delete_image(url[url.rfind('/') + 1: url.rfind('?')])
             raise e
         
-        return exercise.to_dict()
+        response = exercise.to_dict()
+        response['url'] = url
+        return response
     
     @staticmethod
     def delete_exercise(exercise_id): #! ???
