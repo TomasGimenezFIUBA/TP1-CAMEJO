@@ -22,15 +22,15 @@ const exercises = await res.json()
                 </div>
                 <div class="exercise-right">
                     <div class="section">
-                        <h2 class="section-title">Nombre del ejercicio</h2>
+                        <h2 class="section-title">Exercise name</h2>
                         <h3 class="section-content">{exercise.name}</h3>
                     </div>
                     <div class="section">
-                        <h2 class="section-title">Músculos usados</h2>
+                        <h2 class="section-title">Muscles involved</h2>
                         <h3 class="section-content">{exercise.muscles.join(", ")}</h3>
                     </div>
                     <div class="section">
-                        <h2 class="section-title">Objetos necesarios</h2>
+                        <h2 class="section-title">Training equipment</h2>
                         <h3 class="section-content">{exercise.equipments.map(equipment => equipment.name).join(", ")}</h3>
                     </div>
                 </div>
