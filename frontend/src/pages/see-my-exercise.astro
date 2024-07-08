@@ -7,8 +7,8 @@ const res = await fetch("http://localhost:8002/api/v1/exercises?by_user_id=1&pag
 const exercises = await res.json()
 ---
 <Layout title="GYM">
-    <Filter />
-    <ul class="exercise-list">
+    <!--<Filter /> -->
+    <ul class="exercise-list mt-20">
         {exercises.map(exercise => (
             <li class="exercise-item" id={exercise.id}>
                 <div class="exercise-left">

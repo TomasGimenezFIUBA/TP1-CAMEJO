@@ -11,7 +11,7 @@ import Layout from "../../layouts/Layout.astro"
             <h2 class="subtitles" id="objects">NECESSARY OBJECTS</h2>
         </div>
         <div class="cont-filter lg:flex">
-            <div>
+            <div class="lg:w-2/3">
                 <MusclesGroupSelector initialSelectedMuscles={[]} client:only="react" />
             </div>
             <TrainingEquipmentSelector initialSelectedEquipment={[]} client:only="react" />
