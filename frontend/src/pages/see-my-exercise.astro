@@ -1,103 +1,153 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Filter from "../components/filter.astro"
+
+
+const res = await fetch("http://localhost:8002/api/v1/exercises?by_user_id=1&page=1&per_page=100")
+const exercises = await res.json()
 ---
 <Layout title="GYM">
-    <Filter></Filter>
-    <ul>
-        <div class="content">
-            <li>
-                <img src="/person-with-pencil.jpeg" class="img">
-                <div class="name-calories">
-                    <h2>nombre del ejercicio</h2>
-                    <h3>num de calorias: 1</h3>
+    <Filter />
+    <ul class="exercise-list">
+        {exercises.map(exercise => (
+            <li class="exercise-item" id={exercise.id}>
+                <div class="exercise-left">
+                    <img src={exercise.url || "/person-with-pencil.jpeg"} class="exercise-img" alt="Exercise Image">
+                    <div class="buttons">
+                        <a href={`/exercises/${exercise.id}`} class="edit-link">
+                            <button class="button-edit">✏️</button>             
+                        </a>
+                        <button class="button-delete" exercise-id={exercise.id}>DELETE</button>
+                    </div>
                 </div>
-                <div class="used-mucle">
-                    <h2>musculo/s usado/s:</h2>
-                    <h3>pierna</h3>
+                <div class="exercise-right">
+                    <div class="section">
+                        <h2 class="section-title">Nombre del ejercicio</h2>
+                        <h3 class="section-content">{exercise.name}</h3>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Músculos usados</h2>
+                        <h3 class="section-content">{exercise.muscles.join(", ")}</h3>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Objetos necesarios</h2>
+                        <h3 class="section-content">{exercise.equipments.map(equipment => equipment.name).join(", ")}</h3>
+                    </div>
                 </div>
-                <div class="used-object">
-                    <h2>objeto/s necesario/s:</h2>
-                    <h3>escoba</h3>
-                </div>
-                <a href="/" class="edit-link">
-                    <button class="button-edit">✏️</button>             
-                </a>
-                <button class="button-delete">DELETE</button>
             </li>
-        </div>
+        ))}
     </ul>
 </Layout>
+
+<script type="module">
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.button-delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const exerciseId = button.getAttribute('exercise-id');
+                handleDelete(exerciseId);
+            });
+        });
+    });
+    
+    async function handleDelete(exerciseId) {
+        const confirmDelete = confirm("¿Estás seguro de que deseas eliminar este ejercicio?");
+        if (confirmDelete) {
+            try {
+                const response = await fetch(`http://localhost:8002/api/v1/exercises/${exerciseId}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    alert("El ejercicio ha sido eliminado correctamente.");
+                    document.getElementById(exerciseId).remove();
+                    // Refrescar la lista de ejercicios u otra acción necesaria después de eliminar
+                } else {
+                    throw new Error('Error al eliminar el ejercicio.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Hubo un problema al intentar eliminar el ejercicio.");
+            }
+        }
+    }
+</script>
 <style>
-    ul {
-        position: relative;
+    .exercise-list {
         list-style: none;
         padding: 0;
-        font-size: 25px;
-        top: 50px;
-        margin-bottom: 50px;
+        margin: 0;
     }
-    .content {
-        height: 100px;
-        background-color: rgb(37, 36, 36);
-        border: 1px solid #ffffff44;
+    .exercise-item {
+        display: grid;
+        grid-template-columns: 1fr 3fr; /* Divide en una columna pequeña y tres grandes */
+        background-color: #1f1f1f;
+        border: 1px solid #3a3a3a;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        transition: transform 0.2s;
     }
-    li {
+    .exercise-item:hover {
+        transform: scale(1.01);
+    }
+    .exercise-left {
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
     }
-    .img {
-        position: relative;
-        top: 6px;
-        text-align: center;
-        margin-left: 2%;
-        margin-right: 2%;
-        width: 85px;
-        height: 85px;
+    .exercise-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
     }
-    .name-calories {
-        position: relative;
-        top: 13px;
-        text-align: center;
-        margin-left: 5%;
-        margin-right: 5%;
-        
+    .buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
     }
-    .used-mucle {
-        position: relative;
-        top: 13px;
-        text-align: center;
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-    .used-object {
-        position: relative;
-        top: 13px;
-        text-align: center;
-        margin-left: 5%;
-        margin-right: 5%;
+    .button-edit, .button-delete {
+        border: none;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s;
     }
     .button-edit {
-        position: relative;
-        top: 20px;
-        margin: 2%;
-        background-color: green;
-        padding-left: 10px;
-        padding-right: 10px;
-        left: 120px;
-        margin-right: 100px;
-        height: 50px;
-        font-size: 23px;
-        border-radius: 100%;
+        background-color: #28a745;
+        color: white;
+    }
+    .button-edit:hover {
+        background-color: #218838;
     }
     .button-delete {
-        position: relative;
-        top: 23px;
-        background-color: red;
-        padding-left: 10px;
-        padding-right: 10px;
-        left: 120px;
-        height: 50px;
-        font-size: 23px;
-        border-radius: 10px;
+        background-color: #dc3545;
+        color: white;
+    }
+    .button-delete:hover {
+        background-color: #c82333;
+    }
+    .exercise-right {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Divide en tres columnas iguales */
+        gap: 1rem; /* Espacio entre las columnas */
+        padding: 1rem;
+    }
+    .section {
+        margin-bottom: 1rem;
+    }
+    .section-title {
+        font-size: 1.25rem;
+        color: #28a745;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .section-content {
+        font-size: 1rem;
+        color: #ddd;
+        margin: 0;
+        text-align: center;
     }
 </style>

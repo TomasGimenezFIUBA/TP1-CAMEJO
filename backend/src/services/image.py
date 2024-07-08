@@ -58,7 +58,8 @@ class ImageService:
     @staticmethod
     def get_all_images():
         objects = ImageService.minio_client.list_objects(current_configuration.BUCKET_NAME)
-        return [obj.object_name for obj in objects]
+        urls = [ImageService.minio_client.presigned_get_object(current_configuration.BUCKET_NAME, obj.object_name) for obj in objects]
+        return urls
     
     @staticmethod
     def generate_hashed_filename(filename):
@@ -68,4 +69,9 @@ class ImageService:
     
     @staticmethod
     def get_presigned_url(filename):
-        return ImageService.minio_client.presigned_get_object(current_configuration.BUCKET_NAME, filename, expires=timedelta(hours=1))
+        try:
+            url = ImageService.minio_client.presigned_get_object(current_configuration.BUCKET_NAME, filename, expires=timedelta(hours=1))
+            return url
+        except S3Error:
+            print('no se encuentra la imagen')
+            return ""

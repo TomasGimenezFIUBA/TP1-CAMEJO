@@ -10,22 +10,35 @@ class ExerciseService:
     available_muscles =  ["biceps", "deltoids", "forearms", "triceps", "trapezius", "lats", "abs", "obliques", "pectorals", "adductors", "calves", "hamstrings", "glutes", "quads"]#atributo muscles="bicep;chest;"
 
     @staticmethod
-    def get_all_exercises(page, per_page):
-        exercises = Exercise.query.paginate(page=page, per_page=per_page)
+    def get_all_exercises(page, per_page, by_user_id=None, not_by_user_id=None):
+        exercises = []
+        
+        if by_user_id:
+            exercises = Exercise.query.filter_by(user_id=by_user_id).paginate(page=page, per_page=per_page)
+        elif not_by_user_id:
+            exercises = Exercise.query.filter(Exercise.user_id != not_by_user_id).paginate(page=page, per_page=per_page)
+        else:
+            exercises = Exercise.query.paginate(page=page, per_page=per_page)
+        
+        responses = [exercise.to_dict() for exercise in exercises.items]
         try:
-            for exercise in exercises.items:
-                exercise.url = ImageService.get_presigned_url(exercise.url)
+            for response in responses:
+                url = ImageService.get_presigned_url(response["url"]) if response["url"] else None
+                response["url"] = url
         except Exception as e:
             print(e)
-        return [exercise.to_dict() for exercise in exercises]
+       
+        return responses
     
     @staticmethod
     def get_exercise_by_id(exercise_id):
         exercise = Exercise.query.get(exercise_id)
-        exercise.url = ImageService.get_presigned_url(exercise.url)
+        url = ImageService.get_presigned_url(exercise.url)
         if not exercise:
             raise ExerciseNotFoundException(f'User with id {exercise_id} not found')
-        return exercise.to_dict()
+        response = exercise.to_dict()
+        response['url'] = url
+        return response
 
     @staticmethod
     def create_exercise(user_id, data, file):
@@ -49,7 +62,7 @@ class ExerciseService:
             url=filename,
             calories=int(data['calories']),
             extra_data=data['extra_data'],
-            muscles = exercise_muscles,
+            muscles = data['muscles'],
             user_id = user_id,
             equipments = training_equipments
         )
@@ -79,26 +92,26 @@ class ExerciseService:
             raise ExerciseNotFoundException(f'Exercise with id {exercise_id} not found')
         
         UserService.get_user_by_id(user_id)
-        training_equipments = TrainingEquipmentServices.get_equipments_by_ids(data['equipments'])
+        training_equipments = TrainingEquipmentServices.get_equipments_by_ids(json.loads(data['equipments']))
         
-        url = data['url']
-
+        url = exercise.url
         if file:
             url = ImageService.upload_image(file)
-        
+
         exercise.name = data['name']
         exercise.description = data['description']
         exercise.url = url[url.rfind('/') + 1: url.rfind('?')]
         exercise.calories = int(data['calories'])
         exercise.extra_data = data['extra_data']
-        exercise.muscles = exercise_muscles
+        exercise.muscles = data['muscles']
         exercise.user_id = user_id
         exercise.equipments = training_equipments   #? ¿Esto se termina modificando?
 
         try :
             db.session.commit()
-            ImageService.delete_image(data['url'])
+            ImageService.delete_image(exercise.url)
         except Exception as e:
+            print(e)
             ImageService.delete_image(url[url.rfind('/') + 1: url.rfind('?')])
             raise e
         

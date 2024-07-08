@@ -1,24 +1,7 @@
 ---
-import MusclesGroupSelector from "../components/MusclesGroupSelector";
-import TrainingEquipmentSelector from "../components/TrainingEquipmentSelector";
-import Layout from "../layouts/Layout.astro"
-
-const initialData = ["biceps", "triceps", "forearms"];
-const initialEquipment = [
-    {
-        id: 1,
-        name: "Dumbbells",
-        url: null
-    },{
-        id: 2,
-        name: "Barbell",
-        url: null
-    },{
-        id: 3,
-        name: "Bench",
-        url: null
-    }
-];
+import MusclesGroupSelector from "../../components/MusclesGroupSelector";
+import TrainingEquipmentSelector from "../../components/TrainingEquipmentSelector";
+import Layout from "../../layouts/Layout.astro"
 ---
 
 <Layout title="GYM">
@@ -29,9 +12,9 @@ const initialEquipment = [
         </div>
         <div class="cont-filter lg:flex">
             <div>
-                <MusclesGroupSelector initialSelectedMuscles={initialData} client:only="react" />
+                <MusclesGroupSelector initialSelectedMuscles={[]} client:only="react" />
             </div>
-            <TrainingEquipmentSelector initialSelectedEquipment={initialEquipment} client:only="react" />
+            <TrainingEquipmentSelector initialSelectedEquipment={[]} client:only="react" />
         </div>
         <div class="cont-input">
             <form id="exercise-form" enctype="multipart/form-data">
@@ -90,6 +73,7 @@ const initialEquipment = [
                     });
 
                     const result = await response.json();
+                    window.location.href = '/';
                     console.log('Success:', result);
                 } catch (error) {
                     console.error('Error:', error);
@@ -160,6 +144,7 @@ const initialEquipment = [
         background-color: #fff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        color: #333;
     }
     .subtitles {
         font-size: 1.5rem;

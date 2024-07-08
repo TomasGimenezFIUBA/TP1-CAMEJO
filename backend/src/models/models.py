@@ -58,9 +58,10 @@ class Exercise(db.Model):
             'url': self.url,
             'calories': self.calories,
             'extra_data': self.extra_data,
-            'muscles': self.muscles,
+            'muscles': self.muscles.split(';') if self.muscles else [],
             'id': self.id,
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'equipments': [equipment.to_dict() for equipment in self.equipments]
         }
 
 class Routine(db.Model):

@@ -5,7 +5,8 @@ export const publicRoutes = [
     "/",
     "/demos",
     "/see-my-exercise",
-    "/search-exercise"
+    "/search-exercise",
+    "/exercises/create",
 ]
 
 //TODO eliminar las rutas no publicas, esto es solo para develop
