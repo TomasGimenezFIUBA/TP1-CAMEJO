@@ -35,12 +35,15 @@ import Layout from "../layouts/Layout.astro"
             if (!email || !password ) {
                 alert('Please complete all fields');
                 event.preventDefault();
+                return
             } else if (!emailPattern.test(email)) {
                 alert('Mail is not valid');
                 event.preventDefault();
+                return
             } else if (password.length < 6) {
                 alert('Password must be at least 8 characters.');
                 event.preventDefault();
+                return
             } 
 
             const response = await fetch('http://localhost:8002/api/v1/auth/login', {

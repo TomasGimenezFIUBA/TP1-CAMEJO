@@ -2,8 +2,8 @@
 import Layout from "../layouts/Layout.astro"
 import Filter from "../components/filter.astro"
 
-
-const res = await fetch("http://localhost:8002/api/v1/exercises?by_user_id=1&page=1&per_page=100")
+const user_id = Astro.locals.userId
+const res = await fetch(`http://localhost:8002/api/v1/exercises?by_user_id=${user_id}&page=1&per_page=100`)
 const exercises = await res.json()
 ---
 <Layout title="GYM">

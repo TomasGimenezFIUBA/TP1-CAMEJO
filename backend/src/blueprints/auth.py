@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, make_response
 
 from exceptions.AuthException import AuthException
 from services.auth import AuthService
@@ -11,10 +11,13 @@ def login():
     try:
         data = request.get_json()
         response = AuthService.login(data)
-        return jsonify(response), 200
+        resp = make_response(jsonify(response), 200)
+        resp.set_cookie('user_id', str(response['user_id']), max_age=60*60*24)
+        return resp
     except AuthException as e:
         return jsonify({'error': e.message}), 403
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 
     

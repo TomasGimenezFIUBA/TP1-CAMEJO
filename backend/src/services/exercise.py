@@ -92,6 +92,10 @@ class ExerciseService:
             raise ExerciseNotFoundException(f'Exercise with id {exercise_id} not found')
         
         UserService.get_user_by_id(user_id)
+        
+        if exercise.user_id != user_id:
+            raise InvalidExerciseFormatException(f'You can not update this exercise')
+        
         training_equipments = TrainingEquipmentServices.get_equipments_by_ids(json.loads(data['equipments']))
         
         url = exercise.url
@@ -120,11 +124,14 @@ class ExerciseService:
         return response
     
     @staticmethod
-    def delete_exercise(exercise_id): #! ???
+    def delete_exercise(exercise_id, user_id): #! ???
         exercise = Exercise.query.filter_by(id=exercise_id).first()
         
         if not exercise:
             raise ExerciseNotFoundException()
+        
+        if exercise.user_id != user_id:
+            raise InvalidExerciseFormatException(f'You can not delete this exercise')
 
         db.session.delete(exercise)    #? ¿Esto necesita estar dentro de un else? 
         db.session.commit()         

@@ -45,7 +45,11 @@ def update_exercise(exercise_id):
     '''Update an existing exercise'''
     
     file = request.files['file']
-    
+
+    user_id = request.cookies.get('user_id')
+
+    if user_id is None:
+        raise Exception('User ID is required')
     try:
         data = {
             'name': request.form.get('name'),
@@ -55,7 +59,6 @@ def update_exercise(exercise_id):
             'calories': request.form.get('calories'),
             'extra_data': request.form.get('extra_data')
         }
-        user_id = request.form.get('user_id') #todo extraerlo del header
         exercise = ExerciseService.update_exercise(exercise_id, user_id, data, file)
         return jsonify(exercise), 200  # Código 200 para indicar éxito
     except InvalidExerciseFormatException as e:  # Manejo de excepciones específicas
@@ -71,8 +74,10 @@ def update_exercise(exercise_id):
 @exercise_routes.route('/exercises/<int:exercise_id>', methods=['DELETE']) #! Funciona a partir del ejercicio 4
 def delete_exercise(exercise_id):
     '''Delete a exercise'''
+
+    user_id = request.cookies.get('user_id')
     try:
-        result = ExerciseService.delete_exercise(exercise_id)
+        result = ExerciseService.delete_exercise(exercise_id, user_id)
         if result:
             return jsonify({'message': 'Exercise deleted'}), 200
         else:
@@ -98,7 +103,10 @@ def create_exercise(): #curl -X POST -F 'file=@./frontend/public/logo.png' http:
         'extra_data': request.form.get('extra_data')
     }
 
-    user_id = request.form.get('user_id')
+    user_id = request.cookies.get('user_id')
+
+    if user_id is None:
+        raise Exception('User ID is required')
 
     try:
         exercise = ExerciseService.create_exercise(user_id, data, file)

@@ -72,7 +72,7 @@ import Layout from "../layouts/Layout.astro";
             const { id, ...res } = await response.json();
 
             if (response.ok) {
-                document.cookie = `user_id=${id}`;
+                //document.cookie = `user_id=${id}`;
                 alert('Account created successfully!');
                 window.location.href = '/';
             } else {

@@ -9,7 +9,6 @@ let exercise;
 if (id) {
     const res = await fetch(`http://localhost:8002/api/v1/exercises/${id}`); // cambiar a api para docker en vez de localhost
     exercise = await res.json();
-    console.log(exercise);
 }
 ---
 
