@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-
 // esto esta para resolver el error al buildear ya que vite tiene conflicto con fsevents
 export default defineConfig({
   plugins: [
@@ -15,6 +14,6 @@ export default defineConfig({
           return '';
         }
       },
-    },
+    }
   ],
 });

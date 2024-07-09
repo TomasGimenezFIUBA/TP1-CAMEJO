@@ -1,8 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import { SignIn } from "auth-astro/components"
-
-const a = import.meta.env.GOOGLE_CLIENT_ID
 ---
 <Layout title="Login">
     <section class="login-section">
@@ -23,9 +20,6 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
                     </div>
                     <button type="submit" class="btn-submit">Submit</button>
                 </form>
-                <ul class="providers">
-                  <SignIn provider="google">Inicia sesion</SignIn>
-                </ul>
                 <div class="register-link">
                     <p>First time? Click the link and <a href="/sign-up">Register here</a></p>
                 </div>
@@ -33,7 +27,7 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
         </div>
     </section>
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
             const email = (document.getElementById('email') as HTMLInputElement).value;
             const password = (document.getElementById('password') as HTMLInputElement).value;
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -48,6 +42,23 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
                 alert('Password must be at least 8 characters.');
                 event.preventDefault();
             } 
+
+            const response = await fetch('http://localhost:8002/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const { user_id, ...res } = await response.json();
+
+            if (response.ok) {
+              document.cookie = `user_id=${user_id}`;
+              window.location.href = '/'                
+            } else {
+              alert('Invalid email or password');
+            }
         });
     </script>
 </Layout>
