@@ -10,7 +10,7 @@ import Layout from "../layouts/Layout.astro";
                     <h1>Sign Up</h1>
                     <p>Create an account and unlock all our features. Join us and enjoy an incredible and personalized experience!</p>
                 </div>
-                <form id="signup-form" action="/api/signup" method="post">
+                <form id="signup-form">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required />
@@ -36,25 +36,47 @@ import Layout from "../layouts/Layout.astro";
         </div>
     </section>
     <script>
-        document.getElementById('signup-form').addEventListener('submit', function(event) {
-            const email = (document.getElementById('email') as HTMLInputElement).value;
-            const password = (document.getElementById('password') as HTMLInputElement).value;
-            const confirmPassword = (document.getElementById('confirm-password') as HTMLInputElement).value;
-            const name = (document.getElementById('name') as HTMLInputElement).value;
+        document.getElementById('signup-form').addEventListener('submit', async function(event) {
+            const email = (document.getElementById('email')).value;
+            const password = (document.getElementById('password')).value;
+            const confirmPassword = (document.getElementById('confirm-password')).value;
+            const name = (document.getElementById('name')).value;
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
             if (!email || !password || !confirmPassword || !name) {
                 alert('Please complete all fields');
                 event.preventDefault();
+                return
             } else if (!emailPattern.test(email)) {
                 alert('Mail is not valid');
                 event.preventDefault();
+                return
             } else if (password.length < 6) {
                 alert('Password must be at least 8 characters.');
                 event.preventDefault();
+                return
             } else if (password !== confirmPassword) {
                 alert('Passwords do not match.');
                 event.preventDefault();
+                return
+            }
+
+            const response = await fetch('http://localhost:8002/api/v1/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password, name })
+            });
+
+            const { id, ...res } = await response.json();
+
+            if (response.ok) {
+                document.cookie = `user_id=${id}`;
+                alert('Account created successfully!');
+                window.location.href = '/';
+            } else {
+                alert('An error occurred. Please try again. Make sure the email is not already registered.');
             }
         });
     </script>

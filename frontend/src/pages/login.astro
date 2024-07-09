@@ -1,8 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import { SignIn } from "auth-astro/components"
-
-const a = import.meta.env.GOOGLE_CLIENT_ID
 ---
 <Layout title="Login">
     <section class="login-section">
@@ -23,9 +20,6 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
                     </div>
                     <button type="submit" class="btn-submit">Submit</button>
                 </form>
-                <ul class="providers">
-                  <SignIn provider="google">Inicia sesion</SignIn>
-                </ul>
                 <div class="register-link">
                     <p>First time? Click the link and <a href="/sign-up">Register here</a></p>
                 </div>
@@ -58,15 +52,12 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
             });
 
             const { user_id, ...res } = await response.json();
-            console.log(res)
-            if (response.ok) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('user_id', user_id);
 
-                document.cookie = `user_id=${user_id}`;
-                window.location.href = '/'                
+            if (response.ok) {
+              document.cookie = `user_id=${user_id}`;
+              window.location.href = '/'                
             } else {
-                alert('Invalid email or password');
+              alert('Invalid email or password');
             }
         });
     </script>
