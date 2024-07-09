@@ -11,5 +11,5 @@ export default defineConfig({
   integrations: [tailwind(), auth(), react()],
   output: 'server',
   adapter: vercel(),
-  vite: viteConfig // <- Add this line to fix the Vite build error
+  vite: viteConfig, // <- Add this line to fix the Vite build error
 });

@@ -7,6 +7,7 @@ from models.models import db
 from blueprints.users import user_routes
 from blueprints.exercises import exercise_routes
 from blueprints.training_equipments import training_equipments_routes
+from blueprints.auth import auth_routes
 from config import config
 from services.image import ImageService
 
@@ -21,9 +22,8 @@ app.config.from_object(config[env_name])
 app.register_blueprint(user_routes, url_prefix='/api/v1')
 app.register_blueprint(exercise_routes, url_prefix='/api/v1')
 app.register_blueprint(training_equipments_routes, url_prefix='/api/v1')
-@app.route("/")
-def hello():
-    return "Hello world"
+app.register_blueprint(auth_routes, url_prefix='/api/v1')
+
 
 @app.route("/upload-image", methods=['POST'])
 def upload_image(): #curl -X POST -F 'file=@./frontend/public/logo.png' http://localhost:8002/upload-image

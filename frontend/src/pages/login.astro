@@ -33,7 +33,7 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
         </div>
     </section>
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
             const email = (document.getElementById('email') as HTMLInputElement).value;
             const password = (document.getElementById('password') as HTMLInputElement).value;
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -48,6 +48,26 @@ const a = import.meta.env.GOOGLE_CLIENT_ID
                 alert('Password must be at least 8 characters.');
                 event.preventDefault();
             } 
+
+            const response = await fetch('http://localhost:8002/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const { user_id, ...res } = await response.json();
+            console.log(res)
+            if (response.ok) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('user_id', user_id);
+
+                document.cookie = `user_id=${user_id}`;
+                window.location.href = '/'                
+            } else {
+                alert('Invalid email or password');
+            }
         });
     </script>
 </Layout>
